@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OnWebs — אתרים שנראים יקרים בכוונה</title>
+    <meta
+      name="description"
+      content="אונוובס בונים אתרים מהירים וחדים למותגים שמסרבים להיראות ממוצעים."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Heebo:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey1" />
+    <link rel="stylesheet" href="./src/style.css?v=grey1" />
+  </head>
+  <body>
+    <script src="./src/components/Loader/Loader.js"></script>
+    <div class="flash" aria-hidden="true"></div>
+
+    <nav class="page-progress" aria-label="עמוד">
+      <a class="page-progress__seg is-on" href="#hero" data-target="hero" data-i18n-aria="intro" aria-label="פתיח"></a>
+      <a class="page-progress__seg" href="#work" data-target="work" data-i18n-aria="work" aria-label="עבודות"></a>
+      <a class="page-progress__seg" href="#contact" data-target="contact" data-i18n-aria="contact" aria-label="יצירת קשר"></a>
+    </nav>
+
+    <section class="panel panel--hero" id="hero" data-panel="hero" aria-label="פתיח" style="background:#2a2a2a">
+      <header class="chrome">
+        <p class="wordmark" data-scramble-plain>OnWebs</p>
+      </header>
+
+      <div class="panel__inner hero__inner">
+        <p class="kicker" data-kicker data-i18n="kicker">ONWEBS</p>
+        <h1 class="headline" data-split-lines>
+          <span class="line" data-i18n="line1">אתרים שנראים</span>
+          <span class="line" data-i18n="line2">יקרים בכוונה.</span>
+        </h1>
+        <p class="subhead" data-wipe data-words data-i18n="subhead">
+          אונוובס בונים אתרים מהירים וחדים למותגים שמסרבים להיראות ממוצעים.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn--fill" href="#work" data-scramble data-target="work" data-i18n="ctaWork">לצפות בעבודות</a>
+          <a class="btn btn--ghost" href="#contact" data-scramble data-target="contact" data-i18n="ctaStart">להתחיל פרויקט</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="scroller" id="scroller">
+      <section class="panel" id="work" data-panel="work" aria-label="עבודות">
+        <header class="chrome">
+          <p class="wordmark" data-scramble-plain>OnWebs</p>
+        </header>
+
+        <div class="panel__inner work__inner">
+          <h2 class="work-title" data-slam-title data-i18n="workTitle">אתרים נבחרים</h2>
+
+          <ul class="projects" id="projects">
+            <li class="project">
+              <article class="card">
+                <div class="browser" aria-hidden="true">
+                  <div class="browser__bar">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+                    <rect width="320" height="180" fill="#000" />
+                    <rect x="24" y="28" width="120" height="10" fill="#fff" />
+                    <rect x="24" y="48" width="88" height="6" fill="#fff" opacity="0.35" />
+                    <rect x="24" y="92" width="150" height="64" fill="#fff" />
+                    <rect x="186" y="92" width="110" height="28" fill="#fff" opacity="0.2" />
+                    <rect x="186" y="128" width="110" height="28" fill="#fff" opacity="0.12" />
+                  </svg>
+                </div>
+                <h3 class="project__name" data-mask>Northline</h3>
+                <p class="project__stat" data-tick data-i18n="stat1" data-final="+41% פניות">+41% פניות</p>
+                <p class="project__meta" data-mask data-i18n="meta1">סאס / אתר מוצר</p>
+              </article>
+            </li>
+            <li class="project">
+              <article class="card">
+                <div class="browser" aria-hidden="true">
+                  <div class="browser__bar">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+                    <rect width="320" height="180" fill="#000" />
+                    <circle cx="160" cy="78" r="36" fill="none" stroke="#fff" stroke-width="2" />
+                    <rect x="70" y="128" width="180" height="8" fill="#fff" />
+                    <rect x="96" y="144" width="128" height="5" fill="#fff" opacity="0.3" />
+                  </svg>
+                </div>
+                <h3 class="project__name" data-mask>Atelier Kō</h3>
+                <p class="project__stat" data-tick data-i18n="stat2" data-final="+2.4× הזמנות">+2.4× הזמנות</p>
+                <p class="project__meta" data-mask data-i18n="meta2">סטודיו / אתר מותג</p>
+              </article>
+            </li>
+            <li class="project">
+              <article class="card">
+                <div class="browser" aria-hidden="true">
+                  <div class="browser__bar">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+                    <rect width="320" height="180" fill="#000" />
+                    <rect x="0" y="0" width="320" height="70" fill="#fff" opacity="0.12" />
+                    <rect x="24" y="88" width="272" height="4" fill="#fff" opacity="0.4" />
+                    <rect x="24" y="104" width="200" height="4" fill="#fff" opacity="0.25" />
+                    <rect x="24" y="132" width="72" height="28" fill="#fff" />
+                    <rect x="104" y="132" width="72" height="28" fill="none" stroke="#fff" />
+                  </svg>
+                </div>
+                <h3 class="project__name" data-mask>Ember Table</h3>
+                <p class="project__stat" data-tick data-i18n="stat3" data-final="+63% הזמנות מקום">+63% הזמנות מקום</p>
+                <p class="project__meta" data-mask data-i18n="meta3">מסעדה / הזמנות</p>
+              </article>
+            </li>
+            <li class="project">
+              <article class="card">
+                <div class="browser" aria-hidden="true">
+                  <div class="browser__bar">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+                    <rect width="320" height="180" fill="#000" />
+                    <rect x="20" y="24" width="80" height="132" fill="#fff" />
+                    <rect x="112" y="24" width="80" height="132" fill="#fff" opacity="0.35" />
+                    <rect x="204" y="24" width="80" height="132" fill="#fff" opacity="0.15" />
+                  </svg>
+                </div>
+                <h3 class="project__name" data-mask>Vault Supply</h3>
+                <p class="project__stat" data-tick data-i18n="stat4" data-final="+28% סל ממוצע">+28% סל ממוצע</p>
+                <p class="project__meta" data-mask data-i18n="meta4">מסחר / קטלוג</p>
+              </article>
+            </li>
+          </ul>
+
+          <a class="btn btn--ghost work-cta" href="#contact" data-scramble data-target="contact" data-i18n="ctaNext">רוצים אחד כזה?</a>
+        </div>
+      </section>
+
+      <section class="panel" id="contact" data-panel="contact" aria-label="יצירת קשר">
+        <header class="chrome">
+          <p class="wordmark" data-scramble-plain>OnWebs</p>
+        </header>
+
+        <div class="panel__inner contact__inner">
+          <div class="contact__copy">
+            <h2 class="contact-title">
+              <span class="tw" data-typewriter data-i18n="tw">בואו נבנה </span><span class="slam-word" data-slam-word data-i18n="slam">אותו.</span>
+            </h2>
+            <p class="contact__lede" data-words data-i18n="lede">
+              ספרו לנו על האתר. נחזור תוך יום עסקים.
+            </p>
+            <a class="email" href="tel:0504060536" data-scramble>0504060536</a>
+            <p class="copyright" data-track>© OnWebs</p>
+          </div>
+
+          <form class="form" id="contact-form" novalidate>
+            <label class="field" data-label>
+              <span data-i18n="name">שם</span>
+              <input type="text" name="name" autocomplete="name" required />
+            </label>
+            <label class="field" data-label>
+              <span data-i18n="email">אימייל</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <label class="field" data-label>
+              <span data-i18n="type">סוג פרויקט</span>
+              <select name="type" required>
+                <option value="" disabled selected data-i18n="select">בחירה</option>
+                <option data-i18n="optLanding">דף נחיתה</option>
+                <option data-i18n="optBrand">אתר מותג</option>
+                <option data-i18n="optApp">אפליקציית ווב</option>
+                <option data-i18n="optOther">אחר</option>
+              </select>
+            </label>
+            <label class="field" data-label>
+              <span data-i18n="budget">טווח תקציב</span>
+              <select name="budget" required>
+                <option value="" disabled selected data-i18n="select">בחירה</option>
+                <option>$5k–$10k</option>
+                <option>$10k–$25k</option>
+                <option>$25k–$50k</option>
+                <option>$50k+</option>
+              </select>
+            </label>
+            <label class="field field--full" data-label>
+              <span data-i18n="message">הודעה</span>
+              <textarea name="message" rows="4" required></textarea>
+            </label>
+            <button class="btn btn--fill submit" type="submit" data-submit>
+              <span data-submit-label data-i18n="send">שליחה</span>
+            </button>
+            <p class="form__error" id="form-error" hidden data-i18n="error">מלאו את כל השדות עם אימייל תקין.</p>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./src/main.js?v=grey1"></script>
+  </body>
+</html>
