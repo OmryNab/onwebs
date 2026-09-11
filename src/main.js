@@ -627,18 +627,16 @@ function playContact(section) {
     );
   }
 
-  if (reduced) {
-    labels.forEach((l) => {
-      l.style.filter = "none";
-      l.style.opacity = "1";
-    });
-    return;
-  }
+  labels.forEach((l) => {
+    l.style.filter = "none";
+    l.style.opacity = "1";
+  });
+  if (reduced) return;
 
   labels.forEach((label, i) => {
     label.animate(
       [
-        { opacity: 0, transform: "translateY(8px)" },
+        { opacity: 1, transform: "translateY(8px)" },
         { opacity: 1, transform: "translateY(0)" },
       ],
       {

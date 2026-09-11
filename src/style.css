@@ -674,8 +674,8 @@ img.mock {
 }
 
 .field span {
-  filter: blur(12px);
-  opacity: 0;
+  filter: none;
+  opacity: 1;
 }
 
 .field--full,
