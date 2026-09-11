@@ -471,7 +471,16 @@ async function playHero(section) {
 
 function playWork(section) {
   playChrome(section);
-  projectCards()[0]?.scrollIntoView({ behavior: "auto", inline: "start", block: "nearest" });
+  lockProject(1400);
+  const first = projectCards()[0];
+  const track = document.getElementById("projects");
+  if (first && track) {
+    const trackBox = track.getBoundingClientRect();
+    const cardBox = first.getBoundingClientRect();
+    const shift = cardBox.left - trackBox.left;
+    if (Math.abs(shift) > 2) track.scrollLeft += shift;
+  }
+  const enterDelay = 780;
   const title = section.querySelector("[data-slam-title]");
   if (title && !reduced) {
     title.style.transform = "none";
@@ -481,7 +490,7 @@ function playWork(section) {
         { clipPath: "inset(0 100% 0 0)", filter: "blur(10px)", opacity: 1 },
         { clipPath: "inset(0 0 0 0)", filter: "blur(0px)", opacity: 1 },
       ],
-      { duration: 2000, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+      { duration: 2000, delay: enterDelay, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
     );
   } else if (title) {
     title.style.transform = "none";
@@ -510,7 +519,7 @@ function playWork(section) {
       ],
       {
         duration: 1540,
-        delay: 400 + i * 190,
+        delay: enterDelay + 400 + i * 190,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
@@ -528,7 +537,7 @@ function playWork(section) {
       ],
       {
         duration: 1260,
-        delay: 700 + i * 190,
+        delay: enterDelay + 700 + i * 190,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
@@ -544,7 +553,7 @@ function playWork(section) {
       ],
       {
         duration: 1120,
-        delay: 980 + i * 160,
+        delay: enterDelay + 980 + i * 160,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
