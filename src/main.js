@@ -793,10 +793,16 @@ function animateProjectsTo(index, ms = PROJECT_MS) {
 function goProject(index) {
   const cards = projectCards();
   const n = Math.max(0, Math.min(cards.length - 1, index));
-  if (n >= lastProjectIndex()) workTourDone = true;
   animateProjectsTo(n);
   slamProject(n);
   syncWorkLock();
+  if (n >= lastProjectIndex()) {
+    const wait = Math.max(PROJECT_MS, 3400);
+    setTimeout(() => {
+      workTourDone = true;
+      syncWorkLock();
+    }, wait);
+  }
 }
 
 function slamProject(index) {
