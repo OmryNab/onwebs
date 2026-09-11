@@ -193,6 +193,9 @@ body::after {
     120% calc(160% - (var(--hero-wipe) * 210%)),
     -20% calc(148% - (var(--hero-wipe) * 210%))
   );
+}
+
+.panel--hero.is-wiping {
   will-change: clip-path;
 }
 

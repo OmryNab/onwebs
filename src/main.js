@@ -9,7 +9,15 @@ const scrollerPanels = [...document.querySelectorAll("#scroller [data-panel]")];
 const segs = [...document.querySelectorAll(".page-progress__seg")];
 const panelOrder = ["hero", "work", "contact"];
 const HERO_COLOR_UNTIL = 0.68;
+const phoneQuery = window.matchMedia("(max-width: 760px), (hover: none) and (pointer: coarse)");
+function isPhone() {
+  return phoneQuery.matches;
+}
 let heroExit = 0;
+let heroPainted = 0;
+let heroRaf = 0;
+let heroCoast = 0;
+let reelsArmed = true;
 
 const I18N = {
   he: {
@@ -150,29 +158,90 @@ function applyLang() {
   if (send) send.dataset.base = t("send");
 }
 
-function applyHeroExit(next) {
-  const p = Math.min(1, Math.max(0, next));
-  const was = heroExit;
-  heroExit = p;
-  const mix = Math.min(1, p / HERO_COLOR_UNTIL);
-  const wipe = p <= HERO_COLOR_UNTIL ? 0 : (p - HERO_COLOR_UNTIL) / (1 - HERO_COLOR_UNTIL);
+function cancelHeroCoast() {
+  if (heroCoast) cancelAnimationFrame(heroCoast);
+  heroCoast = 0;
+}
+
+function syncWorkReels(show) {
+  if (show === reelsArmed) return;
+  reelsArmed = show;
+  document.querySelectorAll("video.mock-reel").forEach((video) => {
+    if (show) {
+      video.playbackRate = 2.5;
+      const play = video.play();
+      if (play) play.catch(() => {});
+      return;
+    }
+    video.pause();
+  });
+}
+
+function paintHeroExit() {
+  const p = heroExit;
+  const was = heroPainted;
+  heroPainted = p;
+  const until = isPhone() ? 0.12 : HERO_COLOR_UNTIL;
+  const mix = Math.min(1, p / until);
+  const wipe = p <= until ? 0 : (p - until) / (1 - until);
   document.documentElement.style.setProperty("--hero-mix", mix.toFixed(4));
   document.documentElement.style.setProperty("--site-dim", "0");
   if (heroEl) {
     heroEl.style.setProperty("--hero-wipe", wipe.toFixed(4));
   }
+  heroEl?.classList.toggle("is-wiping", isPhone() && p > 0.01 && p < 0.999);
   heroEl?.classList.toggle("is-away", p >= 0.999);
   siteField?.classList.toggle("is-away", p < 0.999);
   if (p >= 0.999) heroEl?.setAttribute("aria-hidden", "true");
   else heroEl?.removeAttribute("aria-hidden");
 
-  if (p < 1 && scroller) scroller.scrollTop = 0;
+  if (p < 1 && scroller && scroller.scrollTop !== 0) scroller.scrollTop = 0;
+
+  syncWorkReels(p >= 0.999);
 
   if (p >= 0.999 && was < 0.999) {
     if (activeId === "hero") activate("work");
   } else if (p < 0.999 && was >= 0.999) {
     activate("hero");
   }
+}
+
+function applyHeroExit(next, immediate = false) {
+  heroExit = Math.min(1, Math.max(0, next));
+  const snap = immediate || heroExit <= 0 || heroExit >= 1;
+  if (snap) {
+    if (heroRaf) {
+      cancelAnimationFrame(heroRaf);
+      heroRaf = 0;
+    }
+    paintHeroExit();
+    return;
+  }
+  if (heroRaf) return;
+  heroRaf = requestAnimationFrame(() => {
+    heroRaf = 0;
+    paintHeroExit();
+  });
+}
+
+function tweenHeroTo(target, ms = 360) {
+  cancelHeroCoast();
+  const from = heroExit;
+  if (Math.abs(from - target) < 0.001) {
+    applyHeroExit(target, true);
+    return;
+  }
+  const start = performance.now();
+  const frame = (now) => {
+    const t = Math.min(1, (now - start) / ms);
+    applyHeroExit(from + (target - from) * easeInOutSine(t), true);
+    if (t < 1) {
+      heroCoast = requestAnimationFrame(frame);
+      return;
+    }
+    heroCoast = 0;
+  };
+  heroCoast = requestAnimationFrame(frame);
 }
 
 function heroCovering() {
@@ -403,7 +472,6 @@ async function playHero(section) {
 function playWork(section) {
   playChrome(section);
   projectCards()[0]?.scrollIntoView({ behavior: "auto", inline: "start", block: "nearest" });
-  slamProject(0);
   const title = section.querySelector("[data-slam-title]");
   if (title && !reduced) {
     title.style.transform = "none";
@@ -768,7 +836,9 @@ function wheelDelta(e) {
 }
 
 function stepHeroExit(dy) {
-  const span = Math.max(900, window.innerHeight * 2.2);
+  const span = isPhone()
+    ? Math.max(240, window.innerHeight * 0.48)
+    : Math.max(900, window.innerHeight * 2.2);
   applyHeroExit(heroExit + dy / span);
 }
 
@@ -840,9 +910,27 @@ window.addEventListener(
 );
 
 let touchY = 0;
+let touchTravel = 0;
+
+function finishHeroTouch() {
+  if (!isPhone() || !heroCovering()) return;
+  if (Math.abs(touchTravel) < 10 && heroExit < 0.04) return;
+  if (touchTravel > 24 || (touchTravel >= 0 && heroExit > 0.16)) {
+    tweenHeroTo(1, 340);
+    return;
+  }
+  if (touchTravel < -24 || heroExit < 0.28) {
+    tweenHeroTo(0, 300);
+    return;
+  }
+  tweenHeroTo(heroExit > 0.42 ? 1 : 0, 340);
+}
+
 window.addEventListener(
   "touchstart",
   (e) => {
+    cancelHeroCoast();
+    touchTravel = 0;
     touchY = e.touches[0]?.clientY || 0;
   },
   { passive: true }
@@ -859,10 +947,11 @@ window.addEventListener(
     if (heroCovering()) {
       e.preventDefault();
       if (reduced && goingDown) {
-        applyHeroExit(1);
+        applyHeroExit(1, true);
         touchY = y;
         return;
       }
+      touchTravel += dy;
       stepHeroExit(dy);
       touchY = y;
       return;
@@ -885,6 +974,7 @@ window.addEventListener(
 
     if (goingUp && currentProjectIndex() === 0) {
       e.preventDefault();
+      touchTravel += dy;
       stepHeroExit(dy);
       touchY = y;
       return;
@@ -909,6 +999,9 @@ window.addEventListener(
   },
   { passive: false, capture: true }
 );
+
+window.addEventListener("touchend", finishHeroTouch, { passive: true });
+window.addEventListener("touchcancel", finishHeroTouch, { passive: true });
 
 scroller.addEventListener("scroll", () => {
   if (pagingTo !== null) return;

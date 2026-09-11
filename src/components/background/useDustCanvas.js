@@ -142,7 +142,11 @@ export function useDustCanvas(wrapper, canvas, getVariant) {
   };
 
   const pageWide = wrapper.classList.contains("gdf--page");
-  const shouldRun = () => visible && !reduced && !wrapper.classList.contains("is-away");
+  const shouldRun = () =>
+    visible &&
+    !reduced &&
+    !wrapper.classList.contains("is-away") &&
+    !wrapper.classList.contains("is-wiping");
 
   const frame = (now) => {
     if (!running) return;
