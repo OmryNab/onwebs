@@ -1110,7 +1110,7 @@ document.querySelectorAll("[data-scramble]").forEach((el) => {
   });
 });
 
-document.getElementById("contact-form")?.addEventListener("submit", (e) => {
+document.getElementById("contact-form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const form = e.currentTarget;
   const error = document.getElementById("form-error");
@@ -1120,6 +1120,31 @@ document.getElementById("contact-form")?.addEventListener("submit", (e) => {
     form.reportValidity();
     return;
   }
+
+  const data = Object.fromEntries(new FormData(form).entries());
+  try {
+    const res = await fetch("https://formsubmit.co/ajax/omrinabwani123@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: data.name,
+        phone: data.phone,
+        type: data.type,
+        budget: data.budget,
+        message: data.message,
+        _subject: "OnWebs — פנייה חדשה",
+      }),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || json.success === false || json.success === "false") throw new Error("send failed");
+  } catch {
+    error.hidden = false;
+    return;
+  }
+
   submitBtn.classList.remove("is-hovering");
   submitBtn.classList.add("is-sent");
   submitBtn.disabled = true;
