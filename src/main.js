@@ -1115,8 +1115,9 @@ document.getElementById("contact-form")?.addEventListener("submit", async (e) =>
   const form = e.currentTarget;
   const error = document.getElementById("form-error");
   const valid = form.checkValidity();
-  error.hidden = valid;
+  error.hidden = true;
   if (!valid) {
+    error.hidden = false;
     form.reportValidity();
     return;
   }
@@ -1136,12 +1137,15 @@ document.getElementById("contact-form")?.addEventListener("submit", async (e) =>
         budget: data.budget,
         message: data.message,
         _subject: "OnWebs — פנייה חדשה",
+        _captcha: "false",
       }),
     });
     const json = await res.json().catch(() => ({}));
-    if (!res.ok || json.success === false || json.success === "false") throw new Error("send failed");
+    const activating = typeof json.message === "string" && /activat/i.test(json.message);
+    if (!activating && (!res.ok || json.success === false || json.success === "false")) {
+      throw new Error("send failed");
+    }
   } catch {
-    error.hidden = false;
     return;
   }
 
