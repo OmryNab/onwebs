@@ -15,9 +15,16 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey1" />
-    <link rel="stylesheet" href="./src/style.css?v=grey1" />
+    <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf4" />
+    <link rel="stylesheet" href="./src/style.css?v=gdf5" />
   </head>
   <body>
+    <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
+      <div class="gdf__grid"></div>
+      <canvas class="gdf__canvas"></canvas>
+      <div class="gdf__sheen"></div>
+      <div class="gdf__vignette"></div>
+    </div>
     <script src="./src/components/Loader/Loader.js"></script>
     <div class="flash" aria-hidden="true"></div>
 
@@ -27,23 +34,29 @@
       <a class="page-progress__seg" href="#contact" data-target="contact" data-i18n-aria="contact" aria-label="יצירת קשר"></a>
     </nav>
 
-    <section class="panel panel--hero" id="hero" data-panel="hero" aria-label="פתיח" style="background:#2a2a2a">
-      <header class="chrome">
-        <p class="wordmark" data-scramble-plain>OnWebs</p>
-      </header>
+    <section class="panel panel--hero gdf gdf--light" id="hero" data-panel="hero" data-gdf-variant="light" aria-label="פתיח">
+      <div class="gdf__grid" aria-hidden="true"></div>
+      <canvas class="gdf__canvas" aria-hidden="true"></canvas>
+      <div class="gdf__sheen" aria-hidden="true"></div>
+      <div class="gdf__vignette" aria-hidden="true"></div>
+      <div class="gdf__content">
+        <header class="chrome">
+          <p class="wordmark" data-scramble-plain>OnWebs</p>
+        </header>
 
-      <div class="panel__inner hero__inner">
-        <p class="kicker" data-kicker data-i18n="kicker">ONWEBS</p>
-        <h1 class="headline" data-split-lines>
-          <span class="line" data-i18n="line1">אתרים שנראים</span>
-          <span class="line" data-i18n="line2">יקרים בכוונה.</span>
-        </h1>
-        <p class="subhead" data-wipe data-words data-i18n="subhead">
-          אונוובס בונים אתרים מהירים וחדים למותגים שמסרבים להיראות ממוצעים.
-        </p>
-        <div class="cta-row">
-          <a class="btn btn--fill" href="#work" data-scramble data-target="work" data-i18n="ctaWork">לצפות בעבודות</a>
-          <a class="btn btn--ghost" href="#contact" data-scramble data-target="contact" data-i18n="ctaStart">להתחיל פרויקט</a>
+        <div class="panel__inner hero__inner">
+          <p class="kicker" data-kicker data-i18n="kicker">ONWEBS</p>
+          <h1 class="headline" data-split-lines>
+            <span class="line" data-i18n="line1">אתרים שנראים</span>
+            <span class="line" data-i18n="line2">יקרים בכוונה.</span>
+          </h1>
+          <p class="subhead" data-wipe data-words data-i18n="subhead">
+            אונוובס בונים אתרים מהירים וחדים למותגים שמסרבים להיראות ממוצעים.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn--fill" href="#work" data-scramble data-target="work" data-i18n="ctaWork">לצפות בעבודות</a>
+            <a class="btn btn--ghost" href="#contact" data-scramble data-target="contact" data-i18n="ctaStart">להתחיל פרויקט</a>
+          </div>
         </div>
       </div>
     </section>
@@ -59,80 +72,73 @@
 
           <ul class="projects" id="projects">
             <li class="project">
-              <article class="card">
-                <div class="browser" aria-hidden="true">
+              <a class="card card--live" href="https://thebaristacafe.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <div class="browser">
                   <div class="browser__bar">
                     <span></span><span></span><span></span>
                   </div>
-                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
-                    <rect width="320" height="180" fill="#000" />
-                    <rect x="24" y="28" width="120" height="10" fill="#fff" />
-                    <rect x="24" y="48" width="88" height="6" fill="#fff" opacity="0.35" />
-                    <rect x="24" y="92" width="150" height="64" fill="#fff" />
-                    <rect x="186" y="92" width="110" height="28" fill="#fff" opacity="0.2" />
-                    <rect x="186" y="128" width="110" height="28" fill="#fff" opacity="0.12" />
-                  </svg>
+                  <video
+                    class="mock-reel"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="auto"
+                    aria-hidden="true"
+                    onloadedmetadata="this.playbackRate=2.5"
+                  >
+                    <source src="./work/barista-scroll.webm?v=full1" type="video/webm" />
+                  </video>
                 </div>
-                <h3 class="project__name" data-mask>Northline</h3>
-                <p class="project__stat" data-tick data-i18n="stat1" data-final="+41% פניות">+41% פניות</p>
-                <p class="project__meta" data-mask data-i18n="meta1">סאס / אתר מוצר</p>
-              </article>
+                <h3 class="project__name" data-mask>Barista.cafe</h3>
+                <p class="project__meta" data-mask data-i18n="metaBarista">קפה / תפריט</p>
+              </a>
             </li>
             <li class="project">
-              <article class="card">
-                <div class="browser" aria-hidden="true">
+              <a class="card card--live" href="https://adam-nevoani.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <div class="browser">
                   <div class="browser__bar">
                     <span></span><span></span><span></span>
                   </div>
-                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
-                    <rect width="320" height="180" fill="#000" />
-                    <circle cx="160" cy="78" r="36" fill="none" stroke="#fff" stroke-width="2" />
-                    <rect x="70" y="128" width="180" height="8" fill="#fff" />
-                    <rect x="96" y="144" width="128" height="5" fill="#fff" opacity="0.3" />
-                  </svg>
+                  <video
+                    class="mock-reel"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="auto"
+                    aria-hidden="true"
+                    onloadedmetadata="this.playbackRate=2.5"
+                  >
+                    <source src="./work/nevoani-scroll.webm?v=full2" type="video/webm" />
+                  </video>
                 </div>
-                <h3 class="project__name" data-mask>Atelier Kō</h3>
-                <p class="project__stat" data-tick data-i18n="stat2" data-final="+2.4× הזמנות">+2.4× הזמנות</p>
-                <p class="project__meta" data-mask data-i18n="meta2">סטודיו / אתר מותג</p>
-              </article>
+                <h3 class="project__name" data-mask>Adam Nevoani</h3>
+                <p class="project__meta" data-mask data-i18n="metaNevoani">צילום / דיוקן</p>
+              </a>
             </li>
             <li class="project">
-              <article class="card">
-                <div class="browser" aria-hidden="true">
+              <a class="card card--live" href="https://peak-riders-phi.vercel.app/#preloader" target="_blank" rel="noopener noreferrer">
+                <div class="browser">
                   <div class="browser__bar">
                     <span></span><span></span><span></span>
                   </div>
-                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
-                    <rect width="320" height="180" fill="#000" />
-                    <rect x="0" y="0" width="320" height="70" fill="#fff" opacity="0.12" />
-                    <rect x="24" y="88" width="272" height="4" fill="#fff" opacity="0.4" />
-                    <rect x="24" y="104" width="200" height="4" fill="#fff" opacity="0.25" />
-                    <rect x="24" y="132" width="72" height="28" fill="#fff" />
-                    <rect x="104" y="132" width="72" height="28" fill="none" stroke="#fff" />
-                  </svg>
+                  <video
+                    class="mock-reel"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="auto"
+                    aria-hidden="true"
+                    onloadedmetadata="this.playbackRate=2.5"
+                  >
+                    <source src="./work/peak-riders-scroll.webm?v=full1" type="video/webm" />
+                  </video>
                 </div>
-                <h3 class="project__name" data-mask>Ember Table</h3>
-                <p class="project__stat" data-tick data-i18n="stat3" data-final="+63% הזמנות מקום">+63% הזמנות מקום</p>
-                <p class="project__meta" data-mask data-i18n="meta3">מסעדה / הזמנות</p>
-              </article>
-            </li>
-            <li class="project">
-              <article class="card">
-                <div class="browser" aria-hidden="true">
-                  <div class="browser__bar">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <svg class="mock" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
-                    <rect width="320" height="180" fill="#000" />
-                    <rect x="20" y="24" width="80" height="132" fill="#fff" />
-                    <rect x="112" y="24" width="80" height="132" fill="#fff" opacity="0.35" />
-                    <rect x="204" y="24" width="80" height="132" fill="#fff" opacity="0.15" />
-                  </svg>
-                </div>
-                <h3 class="project__name" data-mask>Vault Supply</h3>
-                <p class="project__stat" data-tick data-i18n="stat4" data-final="+28% סל ממוצע">+28% סל ממוצע</p>
-                <p class="project__meta" data-mask data-i18n="meta4">מסחר / קטלוג</p>
-              </article>
+                <h3 class="project__name" data-mask>Peak Riders</h3>
+                <p class="project__meta" data-mask data-i18n="metaPeak">אופניים / קבוצה</p>
+              </a>
             </li>
           </ul>
 
@@ -199,6 +205,6 @@
       </section>
     </div>
 
-    <script type="module" src="./src/main.js?v=grey1"></script>
+    <script type="module" src="./src/main.js?v=cards1"></script>
   </body>
 </html>

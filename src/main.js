@@ -1,6 +1,9 @@
+import { mountGridDustField } from "./components/background/GridDustField.js";
+
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const scroller = document.getElementById("scroller");
 const heroEl = document.getElementById("hero");
+const siteField = document.getElementById("site-field");
 const panels = [...document.querySelectorAll("[data-panel]")];
 const scrollerPanels = [...document.querySelectorAll("#scroller [data-panel]")];
 const segs = [...document.querySelectorAll(".page-progress__seg")];
@@ -26,14 +29,9 @@ const I18N = {
     ctaWork: "לצפות בעבודות",
     ctaStart: "להתחיל פרויקט",
     workTitle: "אתרים נבחרים",
-    stat1: "+41% פניות",
-    meta1: "סאס / אתר מוצר",
-    stat2: "+2.4× הזמנות",
-    meta2: "סטודיו / אתר מותג",
-    stat3: "+63% הזמנות מקום",
-    meta3: "מסעדה / הזמנות",
-    stat4: "+28% סל ממוצע",
-    meta4: "מסחר / קטלוג",
+    metaBarista: "קפה / תפריט",
+    metaNevoani: "צילום / דיוקן",
+    metaPeak: "אופניים / קבוצה",
     ctaNext: "רוצים אחד כזה?",
     tw: "בואו נבנה ",
     slam: "אותו.",
@@ -159,14 +157,12 @@ function applyHeroExit(next) {
   const mix = Math.min(1, p / HERO_COLOR_UNTIL);
   const wipe = p <= HERO_COLOR_UNTIL ? 0 : (p - HERO_COLOR_UNTIL) / (1 - HERO_COLOR_UNTIL);
   document.documentElement.style.setProperty("--hero-mix", mix.toFixed(4));
-  const dim = reduced ? 0 : p <= 0.001 ? 0.16 : Math.max(0, 0.16 * (1 - Math.min(1, p / 0.08)));
-  document.documentElement.style.setProperty("--site-dim", dim.toFixed(3));
+  document.documentElement.style.setProperty("--site-dim", "0");
   if (heroEl) {
-    const g = Math.round(42 + (255 - 42) * mix);
-    heroEl.style.background = `rgb(${g}, ${g}, ${g})`;
     heroEl.style.setProperty("--hero-wipe", wipe.toFixed(4));
   }
   heroEl?.classList.toggle("is-away", p >= 0.999);
+  siteField?.classList.toggle("is-away", p < 0.999);
   if (p >= 0.999) heroEl?.setAttribute("aria-hidden", "true");
   else heroEl?.removeAttribute("aria-hidden");
 
@@ -183,12 +179,12 @@ function heroCovering() {
   return heroExit < 0.999;
 }
 
-const PAGE_MS = 1600;
+const PAGE_MS = 3400;
 let pageAnim = 0;
 let pagingTo = null;
 
-function easeInOutCubic(t) {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+function easeInOutSine(t) {
+  return -(Math.cos(Math.PI * t) - 1) / 2;
 }
 
 function animateScrollerTo(top, ms = PAGE_MS) {
@@ -213,7 +209,7 @@ function animateScrollerTo(top, ms = PAGE_MS) {
   function frame(now) {
     if (id !== pageAnim) return;
     const t = Math.min(1, (now - start) / ms);
-    scroller.scrollTop = from + dist * easeInOutCubic(t);
+    scroller.scrollTop = from + dist * easeInOutSine(t);
     if (t < 1) {
       requestAnimationFrame(frame);
       return;
@@ -256,7 +252,7 @@ function setActive(id) {
 
 function slamHeadline(section) {
   const chars = [...section.querySelectorAll(".char-inner")];
-  const stagger = prefersCalm() ? 36 : 55;
+  const stagger = prefersCalm() ? 48 : 72;
   chars.forEach((ch, i) => {
     ch.animate(
       [
@@ -267,14 +263,14 @@ function slamHeadline(section) {
         { transform: "translateY(0%) skewX(0deg)" },
       ],
       {
-        duration: prefersCalm() ? 1040 : 1440,
+        duration: prefersCalm() ? 1480 : 2000,
         delay: i * stagger,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
     );
   });
-  return chars.length * stagger + 1440;
+  return chars.length * stagger + 2000;
 }
 
 function expandKicker(section) {
@@ -282,13 +278,13 @@ function expandKicker(section) {
   if (!kicker) return;
   const label = kicker.dataset.label || kicker.textContent.trim();
   kicker.dataset.label = label;
-  scrambleText(kicker, label, 1040);
+  scrambleText(kicker, label, 1480);
   kicker.animate(
     [
       { letterSpacing: "0em", opacity: 0.35 },
       { letterSpacing: "0.18em", opacity: 1 },
     ],
-    { duration: 1800, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+    { duration: 2400, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
   );
 }
 
@@ -296,7 +292,7 @@ function wipeSubhead(section, delay) {
   const sub = section.querySelector("[data-wipe]");
   if (!sub) return;
   sub.animate([{ clipPath: "inset(0 0 0 100%)" }, { clipPath: "inset(0 0 0 0)" }], {
-    duration: 1400,
+    duration: 2000,
     delay,
     easing: "cubic-bezier(0.16, 1, 0.3, 1)",
     fill: "forwards",
@@ -313,8 +309,8 @@ function slamWords(root, delay = 0) {
         { transform: "translateY(0) skewX(0deg)", opacity: 1 },
       ],
       {
-        duration: prefersCalm() ? 840 : 1120,
-        delay: delay + i * (prefersCalm() ? 55 : 80),
+        duration: prefersCalm() ? 1180 : 1560,
+        delay: delay + i * (prefersCalm() ? 72 : 110),
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
@@ -326,22 +322,22 @@ function playChrome(section) {
   section.querySelectorAll("[data-scramble-plain]").forEach((el, i) => {
     const label = el.dataset.label || el.textContent.trim();
     el.dataset.label = label;
-    setTimeout(() => scrambleText(el, label, 960), i * 160);
+    setTimeout(() => scrambleText(el, label, 1320), i * 220);
     el.animate(
       [
         { transform: "translateY(80%)", opacity: 0 },
         { transform: "translateY(0)", opacity: 1 },
       ],
-      { duration: 1000, delay: i * 160, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+      { duration: 1400, delay: i * 220, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
     );
   });
   section.querySelectorAll(".index[data-tick]").forEach((el) => {
     const finalText = el.dataset.final;
-    scrambleText(el, finalText, 1280);
+    scrambleText(el, finalText, 1760);
   });
 }
 
-function scrambleText(el, finalText, duration = 1400) {
+function scrambleText(el, finalText, duration = 1900) {
   const start = performance.now();
   const upper = finalText.toUpperCase();
   function frame(now) {
@@ -365,7 +361,7 @@ function scrambleButtons(section) {
   section.querySelectorAll("[data-scramble]").forEach((btn, i) => {
     const label = btn.dataset.label || btn.textContent.trim();
     btn.dataset.label = label;
-    setTimeout(() => scrambleText(btn, label, 1280), 440 + i * 240);
+    setTimeout(() => scrambleText(btn, label, 1760), 600 + i * 320);
   });
 }
 
@@ -373,7 +369,7 @@ function flashOnce() {
   const flash = document.querySelector(".flash");
   if (!flash || reduced) return;
   flash.classList.add("is-on");
-  setTimeout(() => flash.classList.remove("is-on"), 360);
+  setTimeout(() => flash.classList.remove("is-on"), 520);
 }
 
 async function playHero(section) {
@@ -417,7 +413,7 @@ function playWork(section) {
         { clipPath: "inset(0 100% 0 0)", filter: "blur(10px)", opacity: 1 },
         { clipPath: "inset(0 0 0 0)", filter: "blur(0px)", opacity: 1 },
       ],
-      { duration: 1400, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+      { duration: 2000, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
     );
   } else if (title) {
     title.style.transform = "none";
@@ -445,8 +441,8 @@ function playWork(section) {
         { transform: "translateX(0)", filter: "blur(0px)", opacity: 1 },
       ],
       {
-        duration: 1100,
-        delay: 280 + i * 140,
+        duration: 1540,
+        delay: 400 + i * 190,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
@@ -463,8 +459,8 @@ function playWork(section) {
         { opacity: 1, transform: "translateY(0)" },
       ],
       {
-        duration: 900,
-        delay: 500 + i * 140,
+        duration: 1260,
+        delay: 700 + i * 190,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
@@ -479,8 +475,8 @@ function playWork(section) {
         { opacity: 1, transform: "translateY(0)" },
       ],
       {
-        duration: 800,
-        delay: 700 + i * 120,
+        duration: 1120,
+        delay: 980 + i * 160,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
@@ -510,7 +506,7 @@ function playContact(section) {
         { opacity: 0, filter: "blur(14px)", transform: "translateY(24px)" },
         { opacity: 1, filter: "blur(0px)", transform: "translateY(0)" },
       ],
-      { duration: 1200, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+      { duration: 1680, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
     );
   }
 
@@ -523,8 +519,8 @@ function playContact(section) {
           { opacity: 1, transform: "translateY(0)" },
         ],
         {
-          duration: 700,
-          delay: 400 + i * 90,
+          duration: 980,
+          delay: 560 + i * 120,
           easing: "ease-out",
           fill: "forwards",
         }
@@ -539,7 +535,7 @@ function playContact(section) {
         { opacity: 0, letterSpacing: "0.28em" },
         { opacity: 1, letterSpacing: "0.08em" },
       ],
-      { duration: 1100, delay: 700, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
+      { duration: 1540, delay: 980, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }
     );
   }
 
@@ -550,7 +546,7 @@ function playContact(section) {
         { opacity: 0 },
         { opacity: 1 },
       ],
-      { duration: 800, delay: 1000, easing: "ease-out", fill: "forwards" }
+      { duration: 1120, delay: 1400, easing: "ease-out", fill: "forwards" }
     );
   }
 
@@ -569,8 +565,8 @@ function playContact(section) {
         { opacity: 1, transform: "translateY(0)" },
       ],
       {
-        duration: 700,
-        delay: 200 + i * 120,
+        duration: 980,
+        delay: 280 + i * 170,
         easing: "cubic-bezier(0.16, 1, 0.3, 1)",
         fill: "forwards",
       }
@@ -608,6 +604,9 @@ const observer = new IntersectionObserver(
 
 scrollerPanels.forEach((p) => observer.observe(p));
 applyLang();
+mountGridDustField(siteField, "light");
+mountGridDustField(heroEl, "light");
+siteField?.classList.add("is-away");
 
 function startHero() {
   holdHero = false;
@@ -674,7 +673,7 @@ function syncWorkLock() {
 }
 
 let projectAnim = 0;
-const PROJECT_MS = 1700;
+const PROJECT_MS = 3200;
 
 function animateProjectsTo(index, ms = PROJECT_MS) {
   if (!projectsTrack) return;
@@ -697,7 +696,7 @@ function animateProjectsTo(index, ms = PROJECT_MS) {
   projectsTrack.style.scrollSnapType = "none";
 
   function ease(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    return -(Math.cos(Math.PI * t) - 1) / 2;
   }
 
   function frame(now) {
@@ -732,11 +731,11 @@ function slamProject(index) {
       { transform: "scale(0.97) translateY(0)", opacity: 1, offset: 0.7 },
       { transform: "scale(1) translateY(0)", opacity: 1 },
     ],
-    { duration: 1600, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)" }
+    { duration: 2800, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)" }
   );
 }
 
-function lockProject(ms = 1750) {
+function lockProject(ms = 3400) {
   projectLock = true;
   setTimeout(() => {
     projectLock = false;
@@ -769,7 +768,7 @@ function wheelDelta(e) {
 }
 
 function stepHeroExit(dy) {
-  const span = Math.max(1100, window.innerHeight * 3.6);
+  const span = Math.max(900, window.innerHeight * 2.2);
   applyHeroExit(heroExit + dy / span);
 }
 
@@ -934,12 +933,12 @@ window.addEventListener("keydown", (e) => {
     if (["PageDown", "ArrowDown", " "].includes(e.key)) {
       if (e.key === " " && e.target.closest("input, textarea, select, button")) return;
       e.preventDefault();
-      applyHeroExit(reduced ? 1 : heroExit + 0.1);
+      applyHeroExit(reduced ? 1 : heroExit + 0.16);
       return;
     }
     if (["PageUp", "ArrowUp"].includes(e.key)) {
       e.preventDefault();
-      applyHeroExit(reduced ? 0 : heroExit - 0.1);
+      applyHeroExit(reduced ? 0 : heroExit - 0.16);
       return;
     }
   }
@@ -1001,7 +1000,7 @@ document.querySelectorAll("[data-scramble]").forEach((el) => {
     if (reduced || el.closest(".is-sent")) return;
     const label = el.dataset.label || el.textContent.trim();
     el.dataset.label = label;
-    scrambleText(el, label, 760);
+    scrambleText(el, label, 1100);
   });
 });
 
@@ -1019,14 +1018,14 @@ document.getElementById("contact-form")?.addEventListener("submit", (e) => {
   submitBtn.classList.add("is-sent");
   submitBtn.disabled = true;
   const label = submitLabel || submitBtn;
-  scrambleText(label, t("sent"), 560);
+  scrambleText(label, t("sent"), 800);
   label.animate(
     [
       { transform: "scale(1)" },
       { transform: "scale(1.18)", offset: 0.4 },
       { transform: "scale(1)" },
     ],
-    { duration: 760, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }
+    { duration: 1100, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }
   );
 });
 

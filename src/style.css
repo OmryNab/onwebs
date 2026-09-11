@@ -5,8 +5,8 @@
   --hero-red: #2a2a2a;
   --hero-mix: 0;
   --site-dim: 0.16;
-  --hero-ink: color-mix(in srgb, var(--white) calc((1 - var(--hero-mix)) * 100%), var(--black));
-  --hero-ink-muted: color-mix(in srgb, rgba(255, 255, 255, 0.58) calc((1 - var(--hero-mix)) * 100%), rgba(0, 0, 0, 0.5));
+  --hero-ink: var(--black);
+  --hero-ink-muted: rgba(0, 0, 0, 0.5);
   --muted: rgba(0, 0, 0, 0.16);
   --muted-text: rgba(0, 0, 0, 0.5);
   --font-display: "Archivo Black", "Arial Black", sans-serif;
@@ -91,7 +91,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: var(--white);
+  background: #f0f1ed;
   color: var(--black);
   font-family: var(--font-body);
   overflow: hidden;
@@ -113,12 +113,15 @@ body::after {
 }
 
 .scroller {
+  position: relative;
+  z-index: 1;
   height: 100%;
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-snap-type: y mandatory;
   scroll-behavior: auto;
+  background: transparent;
 }
 
 .panel {
@@ -130,23 +133,30 @@ body::after {
   scroll-snap-stop: always;
   overflow: hidden;
   padding: calc(var(--space) * 4);
+  background: transparent;
 }
 
 .chrome {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  inset: calc(var(--space) * 4) calc(var(--space) * 4) auto;
+  inset: 11vh 0 auto;
   z-index: 2;
+  width: 100%;
+  pointer-events: none;
+  text-align: center;
 }
 
 .wordmark {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 14px;
-  letter-spacing: 0.18em;
+  font-size: clamp(28px, 7.2vw, 92px);
+  line-height: 1;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  text-align: center;
+  width: 100%;
 }
 
 .index {
@@ -177,16 +187,17 @@ body::after {
   height: 100dvh;
   min-height: 100dvh;
   touch-action: none;
-  background-color: #2a2a2a;
-  background: #2a2a2a;
-  background: color-mix(in srgb, #2a2a2a calc((1 - var(--hero-mix)) * 100%), #ffffff);
   clip-path: polygon(
     -20% -20%,
     120% -20%,
     120% calc(160% - (var(--hero-wipe) * 210%)),
     -20% calc(148% - (var(--hero-wipe) * 210%))
   );
-  will-change: clip-path, background-color;
+  will-change: clip-path;
+}
+
+.panel--hero.gdf {
+  background: linear-gradient(var(--ground-1) 0%, var(--ground-2) 100%);
 }
 
 .panel--hero .chrome,
@@ -246,7 +257,7 @@ body::after {
 }
 
 .headline.is-idle {
-  animation: trackingPulse 7s var(--ease-hard) infinite;
+  animation: trackingPulse 10s var(--ease-hard) infinite;
 }
 
 .line {
@@ -301,12 +312,12 @@ body::after {
 .panel--hero .btn:hover,
 .panel--hero .btn:focus-visible {
   background: var(--hero-ink);
-  color: color-mix(in srgb, var(--black) calc((1 - var(--hero-mix)) * 100%), var(--white));
+  color: var(--white);
 }
 
 .panel--hero .btn--fill {
   background: var(--hero-ink);
-  color: color-mix(in srgb, var(--black) calc((1 - var(--hero-mix)) * 100%), var(--white));
+  color: var(--white);
 }
 
 .panel--hero .btn--fill:hover,
@@ -332,7 +343,7 @@ body::after {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s linear, color 0.15s linear;
+  transition: background 0.32s ease, color 0.32s ease;
 }
 
 .btn:hover,
@@ -360,12 +371,18 @@ body::after {
 .work__inner {
   min-height: 0;
   overflow: hidden;
+  padding-top: 22vh;
+}
+
+#work .wordmark {
+  font-size: clamp(16px, 3vw, 32px);
+  letter-spacing: 0.16em;
 }
 
 .work-title {
   margin: 0 auto calc(var(--space) * 3);
   font-family: var(--font-display);
-  font-size: clamp(32px, 6vw, 80px);
+  font-size: clamp(22px, 3.8vw, 40px);
   line-height: 0.9;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -405,12 +422,23 @@ body::after {
 }
 
 .card {
+  display: block;
   border: 1px solid var(--muted);
   padding: calc(var(--space) * 3);
   height: 100%;
   max-width: 820px;
   margin-inline: auto;
-  transition: background 0.15s linear, color 0.15s linear, border-color 0.15s linear;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.32s ease, color 0.32s ease, border-color 0.32s ease;
+}
+
+img.mock {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .card:hover,
@@ -443,6 +471,36 @@ body::after {
   height: 7px;
   border: 1px solid currentColor;
   border-radius: 50%;
+}
+
+.card--live {
+  overflow: visible;
+}
+
+.card--live .browser {
+  filter: none;
+}
+
+.card--live:hover,
+.card--live:focus-within {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--muted);
+}
+
+.card--live:hover .mock,
+.card--live:focus-within .mock {
+  filter: none;
+}
+
+.card--live .mock-reel {
+  display: block;
+  width: 100%;
+  height: min(48vh, 400px);
+  object-fit: cover;
+  object-position: center top;
+  background: #111;
+  pointer-events: none;
 }
 
 .mock {
@@ -523,6 +581,7 @@ body::after {
   text-align: center;
   gap: calc(var(--space) * 6);
   width: 100%;
+  padding-top: 22vh;
 }
 
 .contact__copy {
@@ -701,7 +760,7 @@ option {
   border-radius: inherit;
   transform: scaleY(0);
   transform-origin: top center;
-  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.95s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
 .page-progress__seg.is-done::after,
@@ -763,7 +822,7 @@ option {
   }
 
   .chrome {
-    inset: calc(var(--space) * 3) calc(var(--space) * 3) auto;
+    inset: 10vh 0 auto;
   }
 
   .page-progress {
