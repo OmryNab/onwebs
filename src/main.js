@@ -40,6 +40,7 @@ const I18N = {
     metaBarista: "קפה / תפריט",
     metaNevoani: "צילום / דיוקן",
     metaPeak: "אופניים / קבוצה",
+    metaBamitzpe: "קפה / נוף",
     ctaNext: "רוצים אחד כזה?",
     tw: "בואו נבנה את ",
     slam: "שלכם",
