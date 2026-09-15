@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey1" />
     <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf4" />
-    <link rel="stylesheet" href="./src/style.css?v=contactType1" />
+    <link rel="stylesheet" href="./src/style.css?v=cal1" />
   </head>
   <body>
     <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
@@ -196,23 +196,34 @@
 
     <dialog class="demo-dialog" id="demo-dialog" aria-labelledby="demo-title">
       <form class="form demo-form" id="contact-form" method="dialog" novalidate>
-        <p class="demo-dialog__title" id="demo-title" data-i18n="demoOpen">לקבלת אתר דימו חינמי לחצו כאן</p>
-        <label class="field" data-label>
-          <span data-i18n="name">שם</span>
-          <input type="text" name="name" autocomplete="name" required />
-        </label>
-        <label class="field" data-label>
-          <span data-i18n="phone">מספר טלפון</span>
-          <input type="tel" name="phone" autocomplete="tel" required />
-        </label>
-        <button class="btn btn--fill submit" type="submit" data-submit>
-          <span data-submit-label data-i18n="send">שליחה</span>
-        </button>
-        <p class="form__error" id="form-error" hidden data-i18n="error">מלאו את כל השדות.</p>
+        <div class="demo-pane" data-demo-pane="fields">
+          <p class="demo-dialog__title" id="demo-title" data-i18n="demoOpen">לקבלת אתר דימו חינמי לחצו כאן</p>
+          <label class="field" data-label>
+            <span data-i18n="name">שם</span>
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+          <label class="field" data-label>
+            <span data-i18n="phone">מספר טלפון</span>
+            <input type="tel" name="phone" autocomplete="tel" required />
+          </label>
+          <button class="btn btn--fill submit" type="submit" data-submit>
+            <span data-submit-label data-i18n="send">שליחה</span>
+          </button>
+          <p class="form__error" id="form-error" hidden data-i18n="error">מלאו את כל השדות.</p>
+        </div>
+        <div class="demo-pane" data-demo-pane="meet" hidden>
+          <p class="demo-dialog__title" data-i18n="demoMeet">קבעו תאריך ושעה לפגישת 30 דקות כדי שנדבר על הדמו.</p>
+          <iframe
+            class="demo-calendly"
+            data-calendly="https://calendly.com/"
+            title="Calendly"
+            loading="lazy"
+          ></iframe>
+        </div>
         <button class="demo-dialog__close" type="button" data-demo-close data-i18n="demoClose">סגירה</button>
       </form>
     </dialog>
 
-    <script type="module" src="./src/main.js?v=heroFast1"></script>
+    <script type="module" src="./src/main.js?v=cal1"></script>
   </body>
 </html>

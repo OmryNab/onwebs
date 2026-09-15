@@ -774,6 +774,26 @@ option {
   color: var(--black);
 }
 
+.demo-dialog.is-calendly {
+  max-width: 52rem;
+}
+
+.demo-pane[hidden] {
+  display: none;
+}
+
+.demo-pane {
+  display: contents;
+}
+
+.demo-calendly {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: min(640px, 70vh);
+  border: 0;
+  background: var(--white);
+}
+
 .demo-dialog__close {
   grid-column: 1 / -1;
   margin: 0;

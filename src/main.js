@@ -38,6 +38,7 @@ const I18N = {
     ctaWork: "לצפות בעבודות",
     ctaStart: "קבלת אתר דימו",
     demoOpen: "לקבלת אתר דימו חינמי לחצו כאן",
+    demoMeet: "קבעו תאריך ושעה לפגישת 30 דקות כדי שנדבר על הדמו.",
     demoClose: "סגירה",
     workTitle: "אתרים נבחרים",
     metaBarista: "קפה / תפריט",
@@ -1096,7 +1097,34 @@ window.addEventListener("keydown", (e) => {
 });
 
 const demoDialog = document.getElementById("demo-dialog");
+const demoFields = demoDialog?.querySelector("[data-demo-pane=fields]");
+const demoMeet = demoDialog?.querySelector("[data-demo-pane=meet]");
+const demoCalendly = demoDialog?.querySelector(".demo-calendly");
+
+function resetDemoDialog() {
+  demoDialog?.classList.remove("is-calendly");
+  if (demoFields) demoFields.hidden = false;
+  if (demoMeet) demoMeet.hidden = true;
+  if (demoCalendly) demoCalendly.removeAttribute("src");
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("is-sent", "is-hovering");
+  }
+  if (submitLabel) submitLabel.textContent = submitLabel.dataset.base || t("send");
+}
+
+function showCalendlyStep(name) {
+  const base = demoCalendly?.dataset.calendly || "https://calendly.com/";
+  const url = new URL(base, window.location.origin);
+  if (name) url.searchParams.set("name", name);
+  if (demoCalendly) demoCalendly.src = url.toString();
+  if (demoFields) demoFields.hidden = true;
+  if (demoMeet) demoMeet.hidden = false;
+  demoDialog?.classList.add("is-calendly");
+}
+
 document.querySelector("[data-demo-open]")?.addEventListener("click", () => {
+  resetDemoDialog();
   if (typeof demoDialog?.showModal === "function") demoDialog.showModal();
 });
 document.querySelector("[data-demo-close]")?.addEventListener("click", () => {
@@ -1105,6 +1133,7 @@ document.querySelector("[data-demo-close]")?.addEventListener("click", () => {
 demoDialog?.addEventListener("click", (e) => {
   if (e.target === demoDialog) demoDialog.close();
 });
+demoDialog?.addEventListener("close", resetDemoDialog);
 
 const submitBtn = document.querySelector("[data-submit]");
 const submitLabel = document.querySelector("[data-submit-label]");
@@ -1164,15 +1193,6 @@ document.getElementById("contact-form")?.addEventListener("submit", async (e) =>
   submitBtn.classList.remove("is-hovering");
   submitBtn.classList.add("is-sent");
   submitBtn.disabled = true;
-  const label = submitLabel || submitBtn;
-  scrambleText(label, t("sent"), 800);
-  label.animate(
-    [
-      { transform: "scale(1)" },
-      { transform: "scale(1.18)", offset: 0.4 },
-      { transform: "scale(1)" },
-    ],
-    { duration: 1100, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }
-  );
+  showCalendlyStep(data.name);
 });
 
