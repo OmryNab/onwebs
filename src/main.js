@@ -206,10 +206,10 @@ function paintHeroExit() {
 
   if (p >= 0.999 && was < 0.999) {
     if (activeId === "hero") activate("work");
-    lockPages(1000);
+    startAbsorb();
   } else if (p < 0.999 && was >= 0.999) {
     activate("hero");
-    lockPages(1000);
+    startAbsorb();
   }
 }
 
@@ -259,19 +259,23 @@ const PAGE_MS = 3400;
 const GESTURE_GAP_MS = 380;
 let pageAnim = 0;
 let pagingTo = null;
-let pageLockUntil = 0;
-let lastWheelAt = 0;
+let absorbGesture = false;
+let absorbTimer = 0;
 
-function lockPages(ms = 900) {
-  pageLockUntil = Math.max(pageLockUntil, performance.now() + ms);
+function startAbsorb() {
+  absorbGesture = true;
+  clearTimeout(absorbTimer);
+  absorbTimer = setTimeout(() => {
+    absorbGesture = false;
+  }, GESTURE_GAP_MS);
 }
 
-function pagesLocked() {
-  return performance.now() < pageLockUntil;
-}
-
-function inWheelGesture() {
-  return performance.now() - lastWheelAt < GESTURE_GAP_MS;
+function markGesture() {
+  if (!absorbGesture) return;
+  clearTimeout(absorbTimer);
+  absorbTimer = setTimeout(() => {
+    absorbGesture = false;
+  }, GESTURE_GAP_MS);
 }
 
 function easeInOutSine(t) {
@@ -317,14 +321,14 @@ function goTo(id) {
     applyHeroExit(0);
     animateScrollerTo(0);
     activate("hero");
-    lockPages(900);
+    startAbsorb();
     return;
   }
   applyHeroExit(1);
   const el = document.getElementById(id);
   if (!el) return;
   animateScrollerTo(el.offsetTop, PAGE_MS);
-  lockPages(900);
+  startAbsorb();
 }
 
 document.querySelectorAll("[data-target]").forEach((el) => {
@@ -817,8 +821,7 @@ window.addEventListener(
     const dy = wheelDelta(e);
     const goingDown = dy > 0;
     const goingUp = dy < 0;
-    const continuingGesture = inWheelGesture();
-    lastWheelAt = performance.now();
+    markGesture();
 
     if (heroCovering()) {
       e.preventDefault();
@@ -831,13 +834,7 @@ window.addEventListener(
       return;
     }
 
-    if (pagesLocked() || pagingTo !== null) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
-
-    if (continuingGesture) {
+    if (absorbGesture || pagingTo !== null) {
       e.preventDefault();
       e.stopPropagation();
       return;
@@ -921,7 +918,7 @@ window.addEventListener(
       return;
     }
 
-    if (pagesLocked() || pagingTo !== null || touchConsumedHero) {
+    if (absorbGesture || pagingTo !== null || touchConsumedHero) {
       e.preventDefault();
       touchY = y;
       return;
