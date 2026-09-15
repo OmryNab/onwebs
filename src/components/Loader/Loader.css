@@ -1,7 +1,7 @@
 .site-loader {
-  --loader-bg: #000000;
-  --loader-track: #2a2a2a;
-  --loader-accent: #ffffff;
+  --loader-bg: #ffffff;
+  --loader-track: #e8e6e1;
+  --loader-accent: #2a2a2a;
   --loader-logo-width: 280px;
   --loader-duration: 3200ms;
 
@@ -53,7 +53,7 @@ html.site-loader-lock body {
 }
 
 .site-loader__logo text {
-  fill: #ffffff;
+  fill: #000000;
   font-family: "Archivo Black", "Arial Black", sans-serif;
   font-size: 42px;
   font-weight: 400;

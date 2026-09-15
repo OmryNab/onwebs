@@ -1,14 +1,14 @@
 :root {
-  --black: #ffffff;
-  --white: #000000;
+  --black: #000000;
+  --white: #ffffff;
   --hero-base: #2a2a2a;
   --hero-red: #2a2a2a;
   --hero-mix: 0;
   --site-dim: 0.16;
   --hero-ink: var(--black);
-  --hero-ink-muted: rgba(255, 255, 255, 0.5);
-  --muted: rgba(255, 255, 255, 0.22);
-  --muted-text: rgba(255, 255, 255, 0.55);
+  --hero-ink-muted: rgba(0, 0, 0, 0.5);
+  --muted: rgba(0, 0, 0, 0.16);
+  --muted-text: rgba(0, 0, 0, 0.5);
   --font-display: "Archivo Black", "Arial Black", sans-serif;
   --font-body: "DM Sans", system-ui, sans-serif;
   --space: 8px;
@@ -91,7 +91,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: #000000;
+  background: #f0f1ed;
   color: var(--black);
   font-family: var(--font-body);
   overflow: hidden;
@@ -590,7 +590,7 @@ img.mock {
 
 .card:hover .project__meta,
 .card:focus-within .project__meta {
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .work-cta {
@@ -729,8 +729,8 @@ textarea:focus {
 
 select {
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, #fff 50%),
-    linear-gradient(135deg, #fff 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, #000 50%),
+    linear-gradient(135deg, #000 50%, transparent 50%);
   background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
@@ -767,7 +767,7 @@ option {
 }
 
 .demo-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.86);
+  background: rgba(255, 255, 255, 0.86);
 }
 
 .demo-form {
