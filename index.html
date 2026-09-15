@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey2" />
     <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf6" />
-    <link rel="stylesheet" href="./src/style.css?v=light1" />
+    <link rel="stylesheet" href="./src/style.css?v=gallery1" />
   </head>
   <body>
     <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
@@ -71,9 +71,10 @@
         <div class="panel__inner work__inner">
           <h2 class="work-title" data-slam-title data-i18n="workTitle">אתרים נבחרים</h2>
 
-          <ul class="projects" id="projects">
+          <ul class="projects gallery" id="projects">
             <li class="project">
-              <a class="card card--live" href="https://thebaristacafe.vercel.app/" target="_blank" rel="noopener noreferrer">
+              <a class="card card--live gallery-card" href="https://thebaristacafe.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <span class="gallery-card__index" aria-hidden="true">01</span>
                 <div class="browser">
                   <div class="browser__bar">
                     <span></span><span></span><span></span>
@@ -91,12 +92,16 @@
                     <source src="./work/barista-scroll.webm?v=full1" type="video/webm" />
                   </video>
                 </div>
-                <h3 class="project__name" data-mask>Barista.cafe</h3>
-                <p class="project__meta" data-mask data-i18n="metaBarista">קפה / תפריט</p>
+                <div class="gallery-card__copy">
+                  <h3 class="project__name" data-mask>Barista.cafe</h3>
+                  <p class="project__meta" data-mask data-i18n="metaBarista">קפה / תפריט</p>
+                  <span class="gallery-card__link">thebaristacafe.vercel.app</span>
+                </div>
               </a>
             </li>
             <li class="project">
-              <a class="card card--live" href="https://adam-nevoani.vercel.app/" target="_blank" rel="noopener noreferrer">
+              <a class="card card--live gallery-card" href="https://adam-nevoani.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <span class="gallery-card__index" aria-hidden="true">02</span>
                 <div class="browser">
                   <div class="browser__bar">
                     <span></span><span></span><span></span>
@@ -114,12 +119,16 @@
                     <source src="./work/nevoani-scroll.webm?v=full2" type="video/webm" />
                   </video>
                 </div>
-                <h3 class="project__name" data-mask>Adam Nevoani</h3>
-                <p class="project__meta" data-mask data-i18n="metaNevoani">צילום / דיוקן</p>
+                <div class="gallery-card__copy">
+                  <h3 class="project__name" data-mask>Adam Nevoani</h3>
+                  <p class="project__meta" data-mask data-i18n="metaNevoani">צילום / דיוקן</p>
+                  <span class="gallery-card__link">adam-nevoani.vercel.app</span>
+                </div>
               </a>
             </li>
             <li class="project">
-              <a class="card card--live" href="https://peak-riders-phi.vercel.app/#preloader" target="_blank" rel="noopener noreferrer">
+              <a class="card card--live gallery-card" href="https://peak-riders-phi.vercel.app/#preloader" target="_blank" rel="noopener noreferrer">
+                <span class="gallery-card__index" aria-hidden="true">03</span>
                 <div class="browser">
                   <div class="browser__bar">
                     <span></span><span></span><span></span>
@@ -137,12 +146,16 @@
                     <source src="./work/peak-riders-scroll.webm?v=full1" type="video/webm" />
                   </video>
                 </div>
-                <h3 class="project__name" data-mask>Peak Riders</h3>
-                <p class="project__meta" data-mask data-i18n="metaPeak">אופניים / קבוצה</p>
+                <div class="gallery-card__copy">
+                  <h3 class="project__name" data-mask>Peak Riders</h3>
+                  <p class="project__meta" data-mask data-i18n="metaPeak">אופניים / קבוצה</p>
+                  <span class="gallery-card__link">peak-riders-phi.vercel.app</span>
+                </div>
               </a>
             </li>
             <li class="project">
-              <a class="card card--live" href="https://kafe-bamitzpe.vercel.app/" target="_blank" rel="noopener noreferrer">
+              <a class="card card--live gallery-card" href="https://kafe-bamitzpe.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <span class="gallery-card__index" aria-hidden="true">04</span>
                 <div class="browser">
                   <div class="browser__bar">
                     <span></span><span></span><span></span>
@@ -160,8 +173,11 @@
                     <source src="./work/bamitzpe-scroll.webm?v=full1" type="video/webm" />
                   </video>
                 </div>
-                <h3 class="project__name" data-mask>קפה במצפה</h3>
-                <p class="project__meta" data-mask data-i18n="metaBamitzpe">קפה / נוף</p>
+                <div class="gallery-card__copy">
+                  <h3 class="project__name" data-mask>קפה במצפה</h3>
+                  <p class="project__meta" data-mask data-i18n="metaBamitzpe">קפה / נוף</p>
+                  <span class="gallery-card__link">kafe-bamitzpe.vercel.app</span>
+                </div>
               </a>
             </li>
           </ul>
