@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey2" />
     <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf6" />
-    <link rel="stylesheet" href="./src/style.css?v=morph2" />
+    <link rel="stylesheet" href="./src/style.css?v=flip1" />
   </head>
   <body>
     <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
@@ -213,22 +213,25 @@
 
         <div class="panel__inner contact__inner">
           <div class="contact__copy">
-            <h2 class="contact-title morph-text" data-morph aria-label="בואו נבנה את שלכם">
-              <svg class="morph-text__svg" aria-hidden="true" focusable="false">
-                <defs>
-                  <filter id="morph-threshold-contact">
-                    <feColorMatrix
-                      in="SourceGraphic"
-                      type="matrix"
-                      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -9"
-                      result="goo"
-                    />
-                    <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-                  </filter>
-                </defs>
-              </svg>
-              <span class="morph-text__rotator">
-                <span class="morph-word">בואו נבנה את שלכם</span>
+            <h2 class="contact-title flip-fade" data-flip-fade aria-label="בואו נבנה את שלכם">
+              <span class="flip-fade__word">
+                <span class="flip-fade__letter" style="--i:0">ב</span>
+                <span class="flip-fade__letter" style="--i:1">ו</span>
+                <span class="flip-fade__letter" style="--i:2">א</span>
+                <span class="flip-fade__letter" style="--i:3">ו</span>
+                <span class="flip-fade__letter flip-fade__letter--space" style="--i:4">&nbsp;</span>
+                <span class="flip-fade__letter" style="--i:5">נ</span>
+                <span class="flip-fade__letter" style="--i:6">ב</span>
+                <span class="flip-fade__letter" style="--i:7">נ</span>
+                <span class="flip-fade__letter" style="--i:8">ה</span>
+                <span class="flip-fade__letter flip-fade__letter--space" style="--i:9">&nbsp;</span>
+                <span class="flip-fade__letter" style="--i:10">א</span>
+                <span class="flip-fade__letter" style="--i:11">ת</span>
+                <span class="flip-fade__letter flip-fade__letter--space" style="--i:12">&nbsp;</span>
+                <span class="flip-fade__letter" style="--i:13">ש</span>
+                <span class="flip-fade__letter" style="--i:14">ל</span>
+                <span class="flip-fade__letter" style="--i:15">כ</span>
+                <span class="flip-fade__letter" style="--i:16">ם</span>
               </span>
             </h2>
             <p class="contact__lede" data-words data-i18n="lede">
@@ -275,6 +278,6 @@
       </form>
     </dialog>
 
-    <script type="module" src="./src/main.js?v=morph2"></script>
+    <script type="module" src="./src/main.js?v=flip1"></script>
   </body>
 </html>

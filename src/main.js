@@ -85,6 +85,8 @@ let activeId = "hero";
 let firstLoad = true;
 let lastPlayed = null;
 let typeTimer = 0;
+let flipFadeTimer = 0;
+let flipFadeExitTimer = 0;
 
 function prefersCalm() {
   return reduced || window.matchMedia("(max-width: 760px)").matches;
@@ -604,14 +606,10 @@ function playContact(section) {
   }
 
   const heading = section.querySelector(".contact-title");
-  if (heading?.hasAttribute("data-morph") && !reduced) {
-    heading.querySelectorAll(".morph-word").forEach((word) => {
-      word.style.animation = "none";
-      void word.offsetWidth;
-      word.style.animation = "";
-    });
+  if (heading?.hasAttribute("data-flip-fade")) {
+    startFlipFade(heading);
   }
-  if (heading && !reduced && !heading.hasAttribute("data-morph")) {
+  if (heading && !reduced && !heading.hasAttribute("data-flip-fade")) {
     heading.animate(
       [
         { opacity: 0, filter: "blur(14px)", transform: "translateY(24px)" },
@@ -683,9 +681,46 @@ function playContact(section) {
   });
 }
 
+function stopFlipFade() {
+  clearInterval(flipFadeTimer);
+  clearTimeout(flipFadeExitTimer);
+  flipFadeTimer = 0;
+  flipFadeExitTimer = 0;
+}
+
+function restartFlipLetters(letters, exiting) {
+  letters.forEach((letter) => {
+    letter.classList.toggle("is-exit", exiting);
+    letter.style.animation = "none";
+    void letter.offsetWidth;
+    letter.style.animation = "";
+  });
+}
+
+function startFlipFade(heading) {
+  stopFlipFade();
+  const letters = [...heading.querySelectorAll(".flip-fade__letter")];
+  if (!letters.length) return;
+  restartFlipLetters(letters, false);
+  if (reduced) return;
+
+  const n = letters.length;
+  const enterMs = (n - 1) * 100 + 600;
+  const exitMs = (n - 1) * 50 + 400;
+  const interval = Math.max(2500, enterMs + 900);
+
+  flipFadeTimer = window.setInterval(() => {
+    restartFlipLetters(letters, true);
+    flipFadeExitTimer = window.setTimeout(() => {
+      restartFlipLetters(letters, false);
+    }, exitMs);
+  }, interval);
+}
+
 function play(id) {
   const section = document.querySelector(`[data-panel="${id}"]`);
   if (!section) return;
+  if (id !== "contact") stopFlipFade();
   if (id === "hero") playHero(section);
   if (id === "work") playWork(section);
   if (id === "contact") playContact(section);

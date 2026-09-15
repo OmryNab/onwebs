@@ -810,29 +810,56 @@ html[dir="rtl"] .gallery-card::after {
   text-transform: uppercase;
 }
 
-.contact-title.morph-text {
-  filter: url(#morph-threshold-contact);
-  will-change: auto;
+.flip-fade__word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
-.contact-title .morph-text__rotator {
-  min-width: 14ch;
+.flip-fade__letter {
+  display: inline-block;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  animation: flip-fade-in 0.6s cubic-bezier(0.2, 0.65, 0.3, 0.9) both;
+  animation-delay: calc(var(--i) * 0.1s);
 }
 
-.contact-title .morph-word {
-  animation: morph-word-hold 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+.flip-fade__letter.is-exit {
+  animation-name: flip-fade-out;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in;
+  animation-delay: calc(var(--i) * 0.05s);
 }
 
-@keyframes morph-word-hold {
-  0% {
+.flip-fade__letter--space {
+  width: 0.33em;
+}
+
+@keyframes flip-fade-in {
+  from {
+    transform: rotateX(90deg) translateY(20px);
     opacity: 0;
-    filter: blur(20px);
-    transform: translate(-50%, -50%) scale(0.8);
+    filter: blur(8px);
   }
-  100% {
+  to {
+    transform: rotateX(0deg) translateY(0);
     opacity: 1;
     filter: blur(0);
-    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes flip-fade-out {
+  from {
+    transform: rotateX(0deg) translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    transform: rotateX(-90deg) translateY(-20px);
+    opacity: 0;
+    filter: blur(8px);
   }
 }
 
@@ -1206,6 +1233,13 @@ option {
 
   .morph-word:first-child {
     opacity: 1 !important;
+  }
+
+  .flip-fade__letter {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
   }
 
   .headline.is-idle,
