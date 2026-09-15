@@ -8,7 +8,7 @@ const panels = [...document.querySelectorAll("[data-panel]")];
 const scrollerPanels = [...document.querySelectorAll("#scroller [data-panel]")];
 const segs = [...document.querySelectorAll(".page-progress__seg")];
 const panelOrder = ["hero", "work", "contact"];
-const HERO_COLOR_UNTIL = 0.68;
+const HERO_COLOR_UNTIL = 0.08;
 const phoneQuery = window.matchMedia("(max-width: 760px), (hover: none) and (pointer: coarse)");
 function isPhone() {
   return phoneQuery.matches;
@@ -206,8 +206,10 @@ function paintHeroExit() {
 
   if (p >= 0.999 && was < 0.999) {
     if (activeId === "hero") activate("work");
+    lockPages(1000);
   } else if (p < 0.999 && was >= 0.999) {
     activate("hero");
+    lockPages(1000);
   }
 }
 
@@ -254,8 +256,23 @@ function heroCovering() {
 }
 
 const PAGE_MS = 3400;
+const GESTURE_GAP_MS = 380;
 let pageAnim = 0;
 let pagingTo = null;
+let pageLockUntil = 0;
+let lastWheelAt = 0;
+
+function lockPages(ms = 900) {
+  pageLockUntil = Math.max(pageLockUntil, performance.now() + ms);
+}
+
+function pagesLocked() {
+  return performance.now() < pageLockUntil;
+}
+
+function inWheelGesture() {
+  return performance.now() - lastWheelAt < GESTURE_GAP_MS;
+}
 
 function easeInOutSine(t) {
   return -(Math.cos(Math.PI * t) - 1) / 2;
@@ -300,12 +317,14 @@ function goTo(id) {
     applyHeroExit(0);
     animateScrollerTo(0);
     activate("hero");
+    lockPages(900);
     return;
   }
   applyHeroExit(1);
   const el = document.getElementById(id);
   if (!el) return;
   animateScrollerTo(el.offsetTop, PAGE_MS);
+  lockPages(900);
 }
 
 document.querySelectorAll("[data-target]").forEach((el) => {
@@ -786,8 +805,8 @@ function wheelDelta(e) {
 
 function stepHeroExit(dy) {
   const span = isPhone()
-    ? Math.max(160, window.innerHeight * 0.32)
-    : Math.max(420, window.innerHeight * 1);
+    ? Math.max(320, window.innerHeight * 0.75)
+    : Math.max(720, window.innerHeight * 1.7);
   applyHeroExit(heroExit + dy / span);
 }
 
@@ -798,6 +817,8 @@ window.addEventListener(
     const dy = wheelDelta(e);
     const goingDown = dy > 0;
     const goingUp = dy < 0;
+    const continuingGesture = inWheelGesture();
+    lastWheelAt = performance.now();
 
     if (heroCovering()) {
       e.preventDefault();
@@ -810,7 +831,13 @@ window.addEventListener(
       return;
     }
 
-    if (pagingTo !== null) {
+    if (pagesLocked() || pagingTo !== null) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    if (continuingGesture) {
       e.preventDefault();
       e.stopPropagation();
       return;
@@ -846,19 +873,20 @@ window.addEventListener(
 
 let touchY = 0;
 let touchTravel = 0;
+let touchConsumedHero = false;
 
 function finishHeroTouch() {
   if (!isPhone() || !heroCovering()) return;
   if (Math.abs(touchTravel) < 10 && heroExit < 0.04) return;
   if (touchTravel > 24 || (touchTravel >= 0 && heroExit > 0.16)) {
-    tweenHeroTo(1, 340);
+    tweenHeroTo(1, 1600);
     return;
   }
   if (touchTravel < -24 || heroExit < 0.28) {
-    tweenHeroTo(0, 300);
+    tweenHeroTo(0, 1400);
     return;
   }
-  tweenHeroTo(heroExit > 0.42 ? 1 : 0, 340);
+  tweenHeroTo(heroExit > 0.42 ? 1 : 0, 1600);
 }
 
 window.addEventListener(
@@ -866,6 +894,7 @@ window.addEventListener(
   (e) => {
     cancelHeroCoast();
     touchTravel = 0;
+    touchConsumedHero = heroCovering();
     touchY = e.touches[0]?.clientY || 0;
   },
   { passive: true }
@@ -892,7 +921,7 @@ window.addEventListener(
       return;
     }
 
-    if (pagingTo !== null) {
+    if (pagesLocked() || pagingTo !== null || touchConsumedHero) {
       e.preventDefault();
       touchY = y;
       return;
