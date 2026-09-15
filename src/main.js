@@ -604,7 +604,14 @@ function playContact(section) {
   }
 
   const heading = section.querySelector(".contact-title");
-  if (heading && !reduced) {
+  if (heading?.hasAttribute("data-morph") && !reduced) {
+    heading.querySelectorAll(".morph-word").forEach((word) => {
+      word.style.animation = "none";
+      void word.offsetWidth;
+      word.style.animation = "";
+    });
+  }
+  if (heading && !reduced && !heading.hasAttribute("data-morph")) {
     heading.animate(
       [
         { opacity: 0, filter: "blur(14px)", transform: "translateY(24px)" },
