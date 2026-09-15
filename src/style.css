@@ -390,6 +390,11 @@ body::after {
   letter-spacing: 0.16em;
 }
 
+#contact .wordmark {
+  font-size: clamp(16px, 3vw, 32px);
+  letter-spacing: 0.16em;
+}
+
 .work-title {
   margin: 0 auto calc(var(--space) * 3);
   font-family: var(--font-display);
@@ -604,7 +609,7 @@ img.mock {
 .contact-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(40px, 6.4vw, 88px);
+  font-size: clamp(28px, 4.8vw, 56px);
   line-height: 0.9;
   letter-spacing: -0.04em;
   text-transform: uppercase;

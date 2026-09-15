@@ -304,7 +304,7 @@ function goTo(id) {
   applyHeroExit(1);
   const el = document.getElementById(id);
   if (!el) return;
-  animateScrollerTo(el.offsetTop);
+  animateScrollerTo(el.offsetTop, id === "work" ? 1400 : PAGE_MS);
 }
 
 document.querySelectorAll("[data-target]").forEach((el) => {
@@ -475,7 +475,7 @@ async function playHero(section) {
 
 function playWork(section) {
   playChrome(section);
-  lockProject(1400);
+  lockProject(600);
   const first = projectCards()[0];
   const track = document.getElementById("projects");
   if (first && track) {
@@ -752,7 +752,7 @@ function syncWorkLock() {
 }
 
 let projectAnim = 0;
-const PROJECT_MS = 3200;
+const PROJECT_MS = 1400;
 
 function animateProjectsTo(index, ms = PROJECT_MS) {
   if (!projectsTrack) return;
@@ -799,7 +799,7 @@ function goProject(index) {
   slamProject(n);
   syncWorkLock();
   if (n >= lastProjectIndex()) {
-    const wait = Math.max(PROJECT_MS, 3400);
+    const wait = PROJECT_MS;
     setTimeout(() => {
       workTourDone = true;
       syncWorkLock();
@@ -816,11 +816,11 @@ function slamProject(index) {
       { transform: "scale(0.97) translateY(0)", opacity: 1, offset: 0.7 },
       { transform: "scale(1) translateY(0)", opacity: 1 },
     ],
-    { duration: 2800, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)" }
+    { duration: 1400, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)" }
   );
 }
 
-function lockProject(ms = 3400) {
+function lockProject(ms = 1400) {
   projectLock = true;
   setTimeout(() => {
     projectLock = false;
@@ -854,8 +854,8 @@ function wheelDelta(e) {
 
 function stepHeroExit(dy) {
   const span = isPhone()
-    ? Math.max(240, window.innerHeight * 0.48)
-    : Math.max(900, window.innerHeight * 2.2);
+    ? Math.max(160, window.innerHeight * 0.32)
+    : Math.max(420, window.innerHeight * 1);
   applyHeroExit(heroExit + dy / span);
 }
 
