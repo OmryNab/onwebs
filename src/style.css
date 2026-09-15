@@ -293,7 +293,7 @@ body::after {
   max-width: 44rem;
   font-size: clamp(16px, 1.6vw, 20px);
   line-height: 1.45;
-  color: var(--hero-ink-muted);
+  color: var(--hero-ink);
   clip-path: inset(0 0 0 100%);
   text-align: center;
 }
@@ -303,7 +303,7 @@ body::after {
   max-width: 36rem;
   font-size: clamp(16px, 1.6vw, 20px);
   line-height: 1.45;
-  color: var(--hero-ink-muted);
+  color: var(--hero-ink);
   text-align: center;
 }
 
