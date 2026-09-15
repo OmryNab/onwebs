@@ -308,11 +308,20 @@ body::after {
 
 .cta-row {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   gap: calc(var(--space) * 2);
   margin-top: calc(var(--space) * 2);
   width: 100%;
+}
+
+.cta-row .btn--fill {
+  min-height: 68px;
+  min-width: 16.5rem;
+  padding: 0 36px;
+  font-size: 16px;
 }
 
 .panel--hero .btn {
