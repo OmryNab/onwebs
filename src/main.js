@@ -1114,7 +1114,7 @@ function resetDemoDialog() {
 }
 
 function showCalendlyStep(name) {
-  const base = demoCalendly?.dataset.calendly || "https://calendly.com/";
+  const base = demoCalendly?.dataset.calendly || "https://calendly.com/omrinabwani123/30min";
   const url = new URL(base, window.location.origin);
   if (name) url.searchParams.set("name", name);
   if (demoCalendly) demoCalendly.src = url.toString();
