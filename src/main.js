@@ -305,6 +305,20 @@ function goTo(id) {
   applyHeroExit(1);
   const el = document.getElementById(id);
   if (!el) return;
+  const contact = document.getElementById("contact");
+  const atContact = Boolean(contact && scroller.scrollTop >= contact.offsetTop - 8);
+  const fromPage = heroCovering() ? "hero" : atContact ? "contact" : "work";
+  const betweenWorkAndContact =
+    (fromPage === "work" && id === "contact") ||
+    (fromPage === "contact" && id === "work");
+  if (betweenWorkAndContact) {
+    pageAnim += 1;
+    pagingTo = null;
+    scroller.style.scrollSnapType = "";
+    scroller.scrollTop = el.offsetTop;
+    activate(id);
+    return;
+  }
   animateScrollerTo(el.offsetTop, id === "work" ? 1400 : PAGE_MS);
 }
 
@@ -683,8 +697,8 @@ const observer = new IntersectionObserver(
 
 scrollerPanels.forEach((p) => observer.observe(p));
 applyLang();
-mountGridDustField(siteField, "light");
-mountGridDustField(heroEl, "light");
+mountGridDustField(siteField, "dark");
+mountGridDustField(heroEl, "dark");
 siteField?.classList.add("is-away");
 
 function startHero() {
