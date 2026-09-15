@@ -738,6 +738,51 @@ option {
   display: inline-block;
 }
 
+.demo-open {
+  max-width: 36rem;
+  width: 100%;
+}
+
+.demo-dialog {
+  border: 1px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  padding: calc(var(--space) * 4);
+  width: calc(100% - 48px);
+  max-width: 36rem;
+}
+
+.demo-dialog::backdrop {
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.demo-form {
+  max-width: none;
+}
+
+.demo-dialog__title {
+  grid-column: 1 / -1;
+  margin: 0 0 calc(var(--space) * 1);
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.4;
+  text-align: center;
+  color: var(--black);
+}
+
+.demo-dialog__close {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--black);
+  cursor: pointer;
+  text-align: center;
+}
+
 .page-progress {
   position: fixed;
   top: 50%;

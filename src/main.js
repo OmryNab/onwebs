@@ -37,6 +37,8 @@ const I18N = {
     heroDemo: "תגלגלו לדף האחרון בשביל אתר דמו חינם לגמרי.",
     ctaWork: "לצפות בעבודות",
     ctaStart: "קבלת אתר דימו",
+    demoOpen: "לקבלת אתר דימו חינמי לחצו כאן",
+    demoClose: "סגירה",
     workTitle: "אתרים נבחרים",
     metaBarista: "קפה / תפריט",
     metaNevoani: "צילום / דיוקן",
@@ -1093,6 +1095,17 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+const demoDialog = document.getElementById("demo-dialog");
+document.querySelector("[data-demo-open]")?.addEventListener("click", () => {
+  if (typeof demoDialog?.showModal === "function") demoDialog.showModal();
+});
+document.querySelector("[data-demo-close]")?.addEventListener("click", () => {
+  demoDialog?.close();
+});
+demoDialog?.addEventListener("click", (e) => {
+  if (e.target === demoDialog) demoDialog.close();
+});
+
 const submitBtn = document.querySelector("[data-submit]");
 const submitLabel = document.querySelector("[data-submit-label]");
 submitBtn?.addEventListener("mouseenter", () => {
@@ -1135,10 +1148,7 @@ document.getElementById("contact-form")?.addEventListener("submit", async (e) =>
       body: JSON.stringify({
         name: data.name,
         phone: data.phone,
-        type: data.type,
-        budget: data.budget,
-        message: data.message,
-        _subject: "OnWebs — פנייה חדשה",
+        _subject: "OnWebs — בקשת אתר דימו",
         _captcha: "false",
       }),
     });

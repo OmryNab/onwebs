@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey1" />
     <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf4" />
-    <link rel="stylesheet" href="./src/style.css?v=subStatic1" />
+    <link rel="stylesheet" href="./src/style.css?v=demoForm1" />
   </head>
   <body>
     <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
@@ -187,48 +187,32 @@
             <p class="copyright" data-track>© OnWebs</p>
           </div>
 
-          <form class="form" id="contact-form" novalidate>
-            <label class="field" data-label>
-              <span data-i18n="name">שם</span>
-              <input type="text" name="name" autocomplete="name" required />
-            </label>
-            <label class="field" data-label>
-              <span data-i18n="phone">מספר טלפון</span>
-              <input type="tel" name="phone" autocomplete="tel" required />
-            </label>
-            <label class="field" data-label>
-              <span data-i18n="type">סוג פרויקט</span>
-              <select name="type" required>
-                <option value="" disabled selected data-i18n="select">בחירה</option>
-                <option data-i18n="optLanding">דף נחיתה</option>
-                <option data-i18n="optBrand">אתר מותג</option>
-                <option data-i18n="optApp">אפליקציית ווב</option>
-                <option data-i18n="optOther">אחר</option>
-              </select>
-            </label>
-            <label class="field" data-label>
-              <span data-i18n="budget">טווח תקציב</span>
-              <select name="budget" required>
-                <option value="" disabled selected data-i18n="select">בחירה</option>
-                <option>₪2k–₪5k</option>
-                <option>₪5k–₪10k</option>
-                <option>₪10k–₪20k</option>
-                <option>₪20k+</option>
-              </select>
-            </label>
-            <label class="field field--full" data-label>
-              <span data-i18n="message">הודעה</span>
-              <textarea name="message" rows="4" required></textarea>
-            </label>
-            <button class="btn btn--fill submit" type="submit" data-submit>
-              <span data-submit-label data-i18n="send">שליחה</span>
-            </button>
-            <p class="form__error" id="form-error" hidden data-i18n="error">מלאו את כל השדות.</p>
-          </form>
+          <button class="btn btn--fill demo-open" type="button" data-demo-open data-i18n="demoOpen">
+            לקבלת אתר דימו חינמי לחצו כאן
+          </button>
         </div>
       </section>
     </div>
 
-    <script type="module" src="./src/main.js?v=demoCta1"></script>
+    <dialog class="demo-dialog" id="demo-dialog" aria-labelledby="demo-title">
+      <form class="form demo-form" id="contact-form" method="dialog" novalidate>
+        <p class="demo-dialog__title" id="demo-title" data-i18n="demoOpen">לקבלת אתר דימו חינמי לחצו כאן</p>
+        <label class="field" data-label>
+          <span data-i18n="name">שם</span>
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label class="field" data-label>
+          <span data-i18n="phone">מספר טלפון</span>
+          <input type="tel" name="phone" autocomplete="tel" required />
+        </label>
+        <button class="btn btn--fill submit" type="submit" data-submit>
+          <span data-submit-label data-i18n="send">שליחה</span>
+        </button>
+        <p class="form__error" id="form-error" hidden data-i18n="error">מלאו את כל השדות.</p>
+        <button class="demo-dialog__close" type="button" data-demo-close data-i18n="demoClose">סגירה</button>
+      </form>
+    </dialog>
+
+    <script type="module" src="./src/main.js?v=demoForm1"></script>
   </body>
 </html>
