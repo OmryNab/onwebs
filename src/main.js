@@ -476,7 +476,6 @@ async function playHero(section) {
 
 function playWork(section) {
   playChrome(section);
-  lockProject(600);
   const first = projectCards()[0];
   const track = document.getElementById("projects");
   if (first && track) {
@@ -711,12 +710,6 @@ if (holdHero) {
 
 const projectsTrack = document.getElementById("projects");
 const projectCards = () => [...document.querySelectorAll(".project")];
-let projectLock = false;
-let workTourDone = false;
-
-function lastProjectIndex() {
-  return Math.max(0, projectCards().length - 1);
-}
 
 function currentProjectIndex() {
   if (!projectsTrack) return 0;
@@ -735,21 +728,6 @@ function currentProjectIndex() {
     }
   });
   return best;
-}
-
-function workLocked() {
-  return activeId === "work" && !workTourDone;
-}
-
-function syncWorkLock() {
-  if (!scroller) return;
-  if (workLocked()) {
-    scroller.style.scrollSnapType = "none";
-    const work = document.getElementById("work");
-    if (work) scroller.scrollTop = work.offsetTop;
-  } else {
-    scroller.style.scrollSnapType = "";
-  }
 }
 
 let projectAnim = 0;
@@ -797,53 +775,6 @@ function goProject(index) {
   const cards = projectCards();
   const n = Math.max(0, Math.min(cards.length - 1, index));
   animateProjectsTo(n);
-  slamProject(n);
-  syncWorkLock();
-  if (n >= lastProjectIndex()) {
-    const wait = PROJECT_MS;
-    setTimeout(() => {
-      workTourDone = true;
-      syncWorkLock();
-    }, wait);
-  }
-}
-
-function slamProject(index) {
-  const card = projectCards()[index]?.querySelector(".card");
-  if (!card || reduced) return;
-  card.animate(
-    [
-      { transform: "scale(1.14) translateY(32px)", opacity: 0.25 },
-      { transform: "scale(0.97) translateY(0)", opacity: 1, offset: 0.7 },
-      { transform: "scale(1) translateY(0)", opacity: 1 },
-    ],
-    { duration: 1400, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)" }
-  );
-}
-
-function lockProject(ms = 1400) {
-  projectLock = true;
-  setTimeout(() => {
-    projectLock = false;
-  }, ms);
-}
-
-function stepProjects(dir) {
-  const i = currentProjectIndex();
-  const last = lastProjectIndex();
-  if (dir > 0 && i < last) {
-    if (projectLock) return true;
-    lockProject();
-    goProject(i + 1);
-    return true;
-  }
-  if (dir < 0 && i > 0) {
-    if (projectLock) return true;
-    lockProject();
-    goProject(i - 1);
-    return true;
-  }
-  return false;
 }
 
 function wheelDelta(e) {
@@ -894,7 +825,7 @@ window.addEventListener(
 
     if (activeId !== "work") return;
 
-    if (goingUp && currentProjectIndex() === 0) {
+    if (goingUp) {
       e.preventDefault();
       e.stopPropagation();
       if (reduced) {
@@ -904,21 +835,7 @@ window.addEventListener(
       stepHeroExit(dy);
       return;
     }
-
-    if (workLocked() && goingDown) {
-      e.preventDefault();
-      e.stopPropagation();
-      stepProjects(1);
-      syncWorkLock();
-      return;
-    }
-    if (goingUp && currentProjectIndex() > 0) {
-      e.preventDefault();
-      e.stopPropagation();
-      stepProjects(-1);
-      return;
-    }
-    if (goingDown && workTourDone) {
+    if (goingDown) {
       e.preventDefault();
       e.stopPropagation();
       goTo("contact");
@@ -990,26 +907,14 @@ window.addEventListener(
 
     if (activeId !== "work") return;
 
-    if (goingUp && currentProjectIndex() === 0) {
+    if (goingUp) {
       e.preventDefault();
       touchTravel += dy;
       stepHeroExit(dy);
       touchY = y;
       return;
     }
-    if (workLocked() && goingDown) {
-      e.preventDefault();
-      stepProjects(1);
-      touchY = y;
-      return;
-    }
-    if (goingUp && currentProjectIndex() > 0) {
-      e.preventDefault();
-      stepProjects(-1);
-      touchY = y;
-      return;
-    }
-    if (goingDown && workTourDone) {
+    if (goingDown) {
       e.preventDefault();
       goTo("contact");
       touchY = y;
@@ -1025,13 +930,6 @@ scroller.addEventListener("scroll", () => {
   if (pagingTo !== null) return;
   if (heroCovering()) {
     scroller.scrollTop = 0;
-    return;
-  }
-  if (!workLocked()) return;
-  const work = document.getElementById("work");
-  if (!work) return;
-  if (Math.abs(scroller.scrollTop - work.offsetTop) > 1) {
-    scroller.scrollTop = work.offsetTop;
   }
 });
 
@@ -1055,8 +953,7 @@ window.addEventListener("keydown", (e) => {
   }
 
   if (activeId === "work") {
-    if (["PageDown", "ArrowDown", " "].includes(e.key) || (e.key === "ArrowRight" && !rtl) || (e.key === "ArrowLeft" && rtl)) {
-      if (e.key === " " && e.target.closest("input, textarea, select, button")) return;
+    if ((e.key === "ArrowRight" && !rtl) || (e.key === "ArrowLeft" && rtl)) {
       const p = currentProjectIndex();
       if (p < lastProject) {
         e.preventDefault();
@@ -1064,7 +961,7 @@ window.addEventListener("keydown", (e) => {
         return;
       }
     }
-    if (["PageUp", "ArrowUp"].includes(e.key) || (e.key === "ArrowLeft" && !rtl) || (e.key === "ArrowRight" && rtl)) {
+    if ((e.key === "ArrowLeft" && !rtl) || (e.key === "ArrowRight" && rtl)) {
       const p = currentProjectIndex();
       if (p > 0) {
         e.preventDefault();
