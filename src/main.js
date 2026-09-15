@@ -372,7 +372,7 @@ function slamHeadline(section) {
 
 function expandKicker(section) {
   const kicker = section.querySelector("[data-kicker]");
-  if (!kicker) return;
+  if (!kicker || kicker.hasAttribute("data-morph")) return;
   const label = kicker.dataset.label || kicker.textContent.trim();
   kicker.dataset.label = label;
   scrambleText(kicker, label, 1480);

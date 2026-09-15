@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey2" />
     <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf6" />
-    <link rel="stylesheet" href="./src/style.css?v=gallery1" />
+    <link rel="stylesheet" href="./src/style.css?v=morph1" />
   </head>
   <body>
     <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
@@ -45,7 +45,27 @@
         </header>
 
         <div class="panel__inner hero__inner">
-          <p class="kicker" data-kicker data-i18n="kicker">ONWEBS</p>
+          <p class="kicker morph-text" data-kicker data-morph aria-label="ONWEBS">
+            <svg class="morph-text__svg" aria-hidden="true" focusable="false">
+              <defs>
+                <filter id="morph-threshold">
+                  <feColorMatrix
+                    in="SourceGraphic"
+                    type="matrix"
+                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -9"
+                    result="goo"
+                  />
+                  <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+                </filter>
+              </defs>
+            </svg>
+            <span class="morph-text__rotator">
+              <span class="morph-word">ONWEBS</span>
+              <span class="morph-word">CREATE</span>
+              <span class="morph-word">DESIGN</span>
+              <span class="morph-word">DEVELOP</span>
+            </span>
+          </p>
           <h1 class="headline" data-split-lines>
             <span class="line" data-i18n="line1">אתרים שנראים</span>
             <span class="line" data-i18n="line2">יקרים בכוונה.</span>
@@ -240,6 +260,6 @@
       </form>
     </dialog>
 
-    <script type="module" src="./src/main.js?v=page8"></script>
+    <script type="module" src="./src/main.js?v=morph1"></script>
   </body>
 </html>
