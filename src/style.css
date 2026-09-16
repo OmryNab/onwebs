@@ -210,8 +210,7 @@ body::after {
 
 .panel--hero.is-away {
   pointer-events: none;
-  visibility: hidden;
-  opacity: 0;
+  display: none;
 }
 
 #hero .panel__inner {
@@ -360,8 +359,11 @@ body::after {
 }
 
 .panel--hero.is-exiting .headline.gooey-reveal,
-.panel--hero.is-away .headline.gooey-reveal {
-  display: none;
+.panel--hero.is-away .headline.gooey-reveal,
+.headline.gooey-reveal[hidden] {
+  display: none !important;
+  filter: none !important;
+  animation: none !important;
 }
 
 .gooey-reveal__inner {

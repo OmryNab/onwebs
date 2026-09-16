@@ -184,6 +184,32 @@ function syncWorkReels(show) {
   });
 }
 
+function syncGooeyHeadline(p) {
+  const heading = heroEl?.querySelector("[data-gooey-reveal]");
+  const gone = p > 0.01;
+  if (heading) {
+    heading.querySelectorAll(".line, [data-gooey-reveal-inner]").forEach((el) => {
+      if (gone) {
+        el.style.filter = "none";
+        el.style.webkitFilter = "none";
+        el.style.animation = "none";
+        el.style.willChange = "auto";
+      } else {
+        el.style.filter = "";
+        el.style.webkitFilter = "";
+        el.style.animation = "";
+        el.style.willChange = "";
+      }
+    });
+    if (gone) heading.classList.remove("is-revealing");
+    heading.hidden = gone;
+    heading.style.display = gone ? "none" : "";
+  }
+  if (heroEl) {
+    heroEl.style.display = p >= 0.999 ? "none" : "";
+  }
+}
+
 function paintHeroExit() {
   const p = heroExit;
   const was = heroPainted;
@@ -197,8 +223,9 @@ function paintHeroExit() {
     heroEl.style.setProperty("--hero-wipe", wipe.toFixed(4));
   }
   heroEl?.classList.toggle("is-wiping", isPhone() && p > 0.01 && p < 0.999);
-  heroEl?.classList.toggle("is-exiting", wipe > 0.001);
+  heroEl?.classList.toggle("is-exiting", p > 0.01);
   heroEl?.classList.toggle("is-away", p >= 0.999);
+  syncGooeyHeadline(p);
   siteField?.classList.toggle("is-away", p < 0.999);
   if (p >= 0.999) heroEl?.setAttribute("aria-hidden", "true");
   else heroEl?.removeAttribute("aria-hidden");
@@ -362,6 +389,7 @@ function playGooeyReveal(heading) {
     heading.querySelectorAll("[data-gooey-reveal-inner]").forEach((inner) => {
       inner.style.animation = "";
     });
+    window.setTimeout(() => heading.classList.remove("is-revealing"), 3100);
   };
 
   if (reduced) {
