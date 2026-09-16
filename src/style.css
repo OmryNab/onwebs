@@ -210,7 +210,6 @@ body::after {
 
 .panel--hero.is-away {
   pointer-events: none;
-  display: none;
 }
 
 #hero .panel__inner {
@@ -336,53 +335,6 @@ body::after {
   font-weight: 400;
   text-align: center;
   color: var(--hero-ink);
-}
-
-.gooey-reveal__svg {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
-.headline.gooey-reveal {
-  overflow: hidden;
-}
-
-.headline.gooey-reveal .line {
-  display: block;
-}
-
-.headline.gooey-reveal.is-revealing .line {
-  filter: url(#gooey-text-reveal) blur(0.4px);
-  will-change: filter;
-}
-
-.panel--hero.is-exiting .headline.gooey-reveal,
-.panel--hero.is-away .headline.gooey-reveal,
-.headline.gooey-reveal[hidden] {
-  display: none !important;
-  filter: none !important;
-  animation: none !important;
-}
-
-.gooey-reveal__inner {
-  display: inline-block;
-  will-change: filter;
-}
-
-.headline.gooey-reveal.is-revealing .gooey-reveal__inner {
-  animation: gooey-reveal-in 3s cubic-bezier(0.215, 0.61, 0.355, 1) both;
-  animation-delay: calc(var(--i, 0) * 0.1s);
-}
-
-@keyframes gooey-reveal-in {
-  from {
-    filter: blur(0.35em);
-  }
-  to {
-    filter: blur(0em);
-  }
 }
 
 .headline.is-idle {
@@ -1288,13 +1240,6 @@ option {
     opacity: 1 !important;
     filter: none !important;
     transform: none !important;
-  }
-
-  .headline.gooey-reveal .line,
-  .headline.gooey-reveal.is-revealing .gooey-reveal__inner,
-  .gooey-reveal__inner {
-    animation: none !important;
-    filter: none !important;
   }
 
   .headline.is-idle,

@@ -184,32 +184,6 @@ function syncWorkReels(show) {
   });
 }
 
-function syncGooeyHeadline(p) {
-  const heading = heroEl?.querySelector("[data-gooey-reveal]");
-  const gone = p > 0.01;
-  if (heading) {
-    heading.querySelectorAll(".line, [data-gooey-reveal-inner]").forEach((el) => {
-      if (gone) {
-        el.style.filter = "none";
-        el.style.webkitFilter = "none";
-        el.style.animation = "none";
-        el.style.willChange = "auto";
-      } else {
-        el.style.filter = "";
-        el.style.webkitFilter = "";
-        el.style.animation = "";
-        el.style.willChange = "";
-      }
-    });
-    if (gone) heading.classList.remove("is-revealing");
-    heading.hidden = gone;
-    heading.style.display = gone ? "none" : "";
-  }
-  if (heroEl) {
-    heroEl.style.display = p >= 0.999 ? "none" : "";
-  }
-}
-
 function paintHeroExit() {
   const p = heroExit;
   const was = heroPainted;
@@ -223,9 +197,7 @@ function paintHeroExit() {
     heroEl.style.setProperty("--hero-wipe", wipe.toFixed(4));
   }
   heroEl?.classList.toggle("is-wiping", isPhone() && p > 0.01 && p < 0.999);
-  heroEl?.classList.toggle("is-exiting", p > 0.01);
   heroEl?.classList.toggle("is-away", p >= 0.999);
-  syncGooeyHeadline(p);
   siteField?.classList.toggle("is-away", p < 0.999);
   if (p >= 0.999) heroEl?.setAttribute("aria-hidden", "true");
   else heroEl?.removeAttribute("aria-hidden");
@@ -377,45 +349,6 @@ function setActive(id) {
   });
 }
 
-function playGooeyReveal(heading) {
-  const run = () => {
-    heading.classList.remove("is-revealing");
-    heading.querySelectorAll("[data-gooey-reveal-inner]").forEach((inner) => {
-      inner.style.filter = "";
-      inner.style.animation = "none";
-    });
-    void heading.offsetWidth;
-    heading.classList.add("is-revealing");
-    heading.querySelectorAll("[data-gooey-reveal-inner]").forEach((inner) => {
-      inner.style.animation = "";
-    });
-    window.setTimeout(() => heading.classList.remove("is-revealing"), 3100);
-  };
-
-  if (reduced) {
-    heading.classList.remove("is-revealing");
-    heading.querySelectorAll("[data-gooey-reveal-inner]").forEach((inner) => {
-      inner.style.filter = "blur(0em)";
-    });
-    return 0;
-  }
-
-  const loader = document.querySelector(".site-loader");
-  if (loader) {
-    const obs = new MutationObserver(() => {
-      if (!document.body.contains(loader)) {
-        obs.disconnect();
-        run();
-      }
-    });
-    obs.observe(document.body, { childList: true });
-    return 3600;
-  }
-
-  run();
-  return 3100;
-}
-
 function slamHeadline(section) {
   const chars = [...section.querySelectorAll(".char-inner")];
   const stagger = prefersCalm() ? 48 : 72;
@@ -540,13 +473,10 @@ function flashOnce() {
 
 async function playHero(section) {
   const headline = section.querySelector(".headline");
-  const gooey = headline?.hasAttribute("data-gooey-reveal");
   headline?.classList.remove("is-idle");
-  if (!gooey) {
-    section.querySelectorAll(".char-inner").forEach((ch) => {
-      ch.style.transform = "translateY(115%)";
-    });
-  }
+  section.querySelectorAll(".char-inner").forEach((ch) => {
+    ch.style.transform = "translateY(115%)";
+  });
   const sub = section.querySelector("[data-wipe]");
   if (sub) sub.style.clipPath = "inset(0 0 0 100%)";
 
@@ -554,7 +484,6 @@ async function playHero(section) {
   firstLoad = false;
 
   if (reduced) {
-    if (gooey) playGooeyReveal(headline);
     section.querySelectorAll(".char-inner").forEach((ch) => {
       ch.style.transform = "none";
     });
@@ -564,7 +493,7 @@ async function playHero(section) {
 
   expandKicker(section);
   playChrome(section);
-  const total = gooey ? playGooeyReveal(headline) : slamHeadline(section);
+  const total = slamHeadline(section);
   wipeSubhead(section, Math.max(560, total - 840));
   scrambleButtons(section);
   setTimeout(() => headline?.classList.add("is-idle"), total + 400);
