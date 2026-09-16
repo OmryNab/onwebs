@@ -380,11 +380,11 @@ function playGooeyReveal(heading) {
       }
     });
     obs.observe(document.body, { childList: true });
-    return 2100;
+    return 3600;
   }
 
   run();
-  return 1600;
+  return 3100;
 }
 
 function slamHeadline(section) {

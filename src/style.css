@@ -356,7 +356,7 @@ body::after {
 }
 
 .headline.gooey-reveal.is-revealing .gooey-reveal__inner {
-  animation: gooey-reveal-in 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  animation: gooey-reveal-in 3s cubic-bezier(0.215, 0.61, 0.355, 1) both;
   animation-delay: calc(var(--i, 0) * 0.1s);
 }
 
