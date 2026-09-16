@@ -197,6 +197,7 @@ function paintHeroExit() {
     heroEl.style.setProperty("--hero-wipe", wipe.toFixed(4));
   }
   heroEl?.classList.toggle("is-wiping", isPhone() && p > 0.01 && p < 0.999);
+  heroEl?.classList.toggle("is-exiting", wipe > 0.001);
   heroEl?.classList.toggle("is-away", p >= 0.999);
   siteField?.classList.toggle("is-away", p < 0.999);
   if (p >= 0.999) heroEl?.setAttribute("aria-hidden", "true");

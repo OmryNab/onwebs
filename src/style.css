@@ -210,6 +210,8 @@ body::after {
 
 .panel--hero.is-away {
   pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
 }
 
 #hero .panel__inner {
@@ -346,7 +348,6 @@ body::after {
 
 .headline.gooey-reveal {
   overflow: hidden;
-  opacity: calc(1 - var(--hero-wipe, 0) * 4);
 }
 
 .headline.gooey-reveal .line {
@@ -358,9 +359,9 @@ body::after {
   will-change: filter;
 }
 
+.panel--hero.is-exiting .headline.gooey-reveal,
 .panel--hero.is-away .headline.gooey-reveal {
-  visibility: hidden;
-  filter: none;
+  display: none;
 }
 
 .gooey-reveal__inner {
