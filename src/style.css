@@ -344,10 +344,23 @@ body::after {
   pointer-events: none;
 }
 
+.headline.gooey-reveal {
+  overflow: hidden;
+  opacity: calc(1 - var(--hero-wipe, 0) * 4);
+}
+
 .headline.gooey-reveal .line {
   display: block;
+}
+
+.headline.gooey-reveal.is-revealing .line {
   filter: url(#gooey-text-reveal) blur(0.4px);
   will-change: filter;
+}
+
+.panel--hero.is-away .headline.gooey-reveal {
+  visibility: hidden;
+  filter: none;
 }
 
 .gooey-reveal__inner {
