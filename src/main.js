@@ -349,6 +349,27 @@ function setActive(id) {
   });
 }
 
+function playGooeyReveal(heading) {
+  const inners = [...heading.querySelectorAll("[data-gooey-reveal-inner]")];
+  inners.forEach((inner, i) => {
+    inner.style.filter = "blur(0.35em)";
+    if (reduced) {
+      inner.style.filter = "blur(0em)";
+      return;
+    }
+    inner.animate(
+      [{ filter: "blur(0.35em)" }, { filter: "blur(0em)" }],
+      {
+        duration: 1500,
+        delay: i * 100,
+        easing: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+        fill: "forwards",
+      }
+    );
+  });
+  return 1500 + Math.max(0, inners.length - 1) * 100;
+}
+
 function slamHeadline(section) {
   const chars = [...section.querySelectorAll(".char-inner")];
   const stagger = prefersCalm() ? 48 : 72;
@@ -473,10 +494,13 @@ function flashOnce() {
 
 async function playHero(section) {
   const headline = section.querySelector(".headline");
+  const gooey = headline?.hasAttribute("data-gooey-reveal");
   headline?.classList.remove("is-idle");
-  section.querySelectorAll(".char-inner").forEach((ch) => {
-    ch.style.transform = "translateY(115%)";
-  });
+  if (!gooey) {
+    section.querySelectorAll(".char-inner").forEach((ch) => {
+      ch.style.transform = "translateY(115%)";
+    });
+  }
   const sub = section.querySelector("[data-wipe]");
   if (sub) sub.style.clipPath = "inset(0 0 0 100%)";
 
@@ -484,6 +508,7 @@ async function playHero(section) {
   firstLoad = false;
 
   if (reduced) {
+    if (gooey) playGooeyReveal(headline);
     section.querySelectorAll(".char-inner").forEach((ch) => {
       ch.style.transform = "none";
     });
@@ -493,7 +518,7 @@ async function playHero(section) {
 
   expandKicker(section);
   playChrome(section);
-  const total = slamHeadline(section);
+  const total = gooey ? playGooeyReveal(headline) : slamHeadline(section);
   wipeSubhead(section, Math.max(560, total - 840));
   scrambleButtons(section);
   setTimeout(() => headline?.classList.add("is-idle"), total + 400);

@@ -337,6 +337,25 @@ body::after {
   color: var(--hero-ink);
 }
 
+.gooey-reveal__svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.headline.gooey-reveal .line {
+  display: block;
+  filter: url(#gooey-text-reveal) blur(0.4px);
+  will-change: filter;
+}
+
+.gooey-reveal__inner {
+  display: inline-block;
+  filter: blur(0.35em);
+  will-change: filter;
+}
+
 .headline.is-idle {
   animation: trackingPulse 10s var(--ease-hard) infinite;
 }
@@ -1240,6 +1259,11 @@ option {
     opacity: 1 !important;
     filter: none !important;
     transform: none !important;
+  }
+
+  .headline.gooey-reveal .line,
+  .gooey-reveal__inner {
+    filter: none !important;
   }
 
   .headline.is-idle,
