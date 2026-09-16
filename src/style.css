@@ -352,8 +352,21 @@ body::after {
 
 .gooey-reveal__inner {
   display: inline-block;
-  filter: blur(0.35em);
   will-change: filter;
+}
+
+.headline.gooey-reveal.is-revealing .gooey-reveal__inner {
+  animation: gooey-reveal-in 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+@keyframes gooey-reveal-in {
+  from {
+    filter: blur(0.35em);
+  }
+  to {
+    filter: blur(0em);
+  }
 }
 
 .headline.is-idle {
@@ -1262,7 +1275,9 @@ option {
   }
 
   .headline.gooey-reveal .line,
+  .headline.gooey-reveal.is-revealing .gooey-reveal__inner,
   .gooey-reveal__inner {
+    animation: none !important;
     filter: none !important;
   }
 

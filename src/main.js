@@ -350,24 +350,41 @@ function setActive(id) {
 }
 
 function playGooeyReveal(heading) {
-  const inners = [...heading.querySelectorAll("[data-gooey-reveal-inner]")];
-  inners.forEach((inner, i) => {
-    inner.style.filter = "blur(0.35em)";
-    if (reduced) {
+  const run = () => {
+    heading.classList.remove("is-revealing");
+    heading.querySelectorAll("[data-gooey-reveal-inner]").forEach((inner) => {
+      inner.style.filter = "";
+      inner.style.animation = "none";
+    });
+    void heading.offsetWidth;
+    heading.classList.add("is-revealing");
+    heading.querySelectorAll("[data-gooey-reveal-inner]").forEach((inner) => {
+      inner.style.animation = "";
+    });
+  };
+
+  if (reduced) {
+    heading.classList.remove("is-revealing");
+    heading.querySelectorAll("[data-gooey-reveal-inner]").forEach((inner) => {
       inner.style.filter = "blur(0em)";
-      return;
-    }
-    inner.animate(
-      [{ filter: "blur(0.35em)" }, { filter: "blur(0em)" }],
-      {
-        duration: 1500,
-        delay: i * 100,
-        easing: "cubic-bezier(0.215, 0.61, 0.355, 1)",
-        fill: "forwards",
+    });
+    return 0;
+  }
+
+  const loader = document.querySelector(".site-loader");
+  if (loader) {
+    const obs = new MutationObserver(() => {
+      if (!document.body.contains(loader)) {
+        obs.disconnect();
+        run();
       }
-    );
-  });
-  return 1500 + Math.max(0, inners.length - 1) * 100;
+    });
+    obs.observe(document.body, { childList: true });
+    return 2100;
+  }
+
+  run();
+  return 1600;
 }
 
 function slamHeadline(section) {
