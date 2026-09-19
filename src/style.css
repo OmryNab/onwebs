@@ -186,6 +186,9 @@ body::after {
   height: 100%;
   height: 100dvh;
   min-height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  contain: paint;
   touch-action: none;
   clip-path: polygon(
     -20% -20%,
@@ -210,6 +213,8 @@ body::after {
 
 .panel--hero.is-away {
   pointer-events: none;
+  visibility: hidden;
+  z-index: 0;
 }
 
 #hero .panel__inner {
