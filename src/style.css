@@ -217,13 +217,6 @@ body::after {
   z-index: 0;
 }
 
-.panel--hero.is-exiting .headline,
-.panel--hero.is-away .headline,
-.headline[hidden] {
-  display: none !important;
-  visibility: hidden !important;
-}
-
 #hero .panel__inner {
   padding-top: 0;
 }
