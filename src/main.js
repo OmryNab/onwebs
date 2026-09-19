@@ -197,8 +197,15 @@ function paintHeroExit() {
     heroEl.style.setProperty("--hero-wipe", wipe.toFixed(4));
   }
   heroEl?.classList.toggle("is-wiping", isPhone() && p > 0.01 && p < 0.999);
+  heroEl?.classList.toggle("is-exiting", p > 0.01);
   heroEl?.classList.toggle("is-away", p >= 0.999);
   siteField?.classList.toggle("is-away", p < 0.999);
+  const headline = heroEl?.querySelector(".headline");
+  if (headline) {
+    const gone = p > 0.01;
+    headline.hidden = gone;
+    headline.style.display = gone ? "none" : "";
+  }
   if (p >= 0.999) heroEl?.setAttribute("aria-hidden", "true");
   else heroEl?.removeAttribute("aria-hidden");
 
