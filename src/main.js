@@ -55,6 +55,14 @@ const I18N = {
     leadName: "שם מלא",
     leadPhone: "טלפון ליצירת קשר",
     leadNext: "בואו נמשיך",
+    leadBiz: "סוג העסק",
+    leadHasSite: "יש לכם אתר היום?",
+    leadHasYes: "כן",
+    leadHasNo: "לא",
+    leadBud1: "עד ₪2,000",
+    leadBud2: "₪2,000–₪5,000",
+    leadBud3: "₪5,000–₪10,000",
+    leadBud4: "מעל ₪10,000",
     type: "סוג פרויקט",
     budget: "טווח תקציב",
     message: "הודעה",
@@ -1066,20 +1074,51 @@ window.addEventListener("keydown", (e) => {
 });
 
 const demoDialog = document.getElementById("demo-dialog");
-const demoFields = demoDialog?.querySelector("[data-demo-pane=fields]");
 const demoMeet = demoDialog?.querySelector("[data-demo-pane=meet]");
 const demoCalendly = demoDialog?.querySelector(".demo-calendly");
+const leadSteps = [...document.querySelectorAll("[data-lead-step]")];
+const leadNext = document.querySelector("[data-lead-next]");
+const leadPct = document.querySelector("[data-lead-pct]");
+const leadFill = document.querySelector("[data-lead-fill]");
+const leadChrome = document.querySelector("[data-lead-chrome]");
+const LEAD_TOTAL = leadSteps.length || 4;
+let leadStep = 0;
+
+function setLeadStep(n) {
+  leadStep = n;
+  leadSteps.forEach((el) => {
+    el.hidden = Number(el.dataset.leadStep) !== n;
+  });
+  const pct = Math.round(((n + 1) / LEAD_TOTAL) * 100);
+  if (leadPct) leadPct.textContent = `${pct}%`;
+  if (leadFill) leadFill.style.width = `${pct}%`;
+  if (leadChrome) leadChrome.hidden = false;
+  if (leadNext) {
+    leadNext.hidden = false;
+    leadNext.disabled = false;
+  }
+}
+
+function currentLeadValid() {
+  const pane = leadSteps.find((el) => Number(el.dataset.leadStep) === leadStep);
+  const fields = pane?.querySelectorAll("input, select, textarea") || [];
+  for (const field of fields) {
+    if (!field.checkValidity()) {
+      field.reportValidity();
+      return false;
+    }
+  }
+  return true;
+}
 
 function resetDemoDialog() {
   demoDialog?.classList.remove("is-calendly");
-  if (demoFields) demoFields.hidden = false;
   if (demoMeet) demoMeet.hidden = true;
   if (demoCalendly) demoCalendly.removeAttribute("src");
-  if (submitBtn) {
-    submitBtn.disabled = false;
-    submitBtn.classList.remove("is-sent", "is-hovering");
-  }
-  if (submitLabel) submitLabel.textContent = submitLabel.dataset.base || t("send");
+  document.getElementById("contact-form")?.reset();
+  const error = document.getElementById("form-error");
+  if (error) error.hidden = true;
+  setLeadStep(0);
 }
 
 function showCalendlyStep(name) {
@@ -1087,7 +1126,11 @@ function showCalendlyStep(name) {
   const url = new URL(base, window.location.origin);
   if (name) url.searchParams.set("name", name);
   if (demoCalendly) demoCalendly.src = url.toString();
-  if (demoFields) demoFields.hidden = true;
+  leadSteps.forEach((el) => {
+    el.hidden = true;
+  });
+  if (leadChrome) leadChrome.hidden = true;
+  if (leadNext) leadNext.hidden = true;
   if (demoMeet) demoMeet.hidden = false;
   demoDialog?.classList.add("is-calendly");
 }
@@ -1104,16 +1147,6 @@ demoDialog?.addEventListener("click", (e) => {
 });
 demoDialog?.addEventListener("close", resetDemoDialog);
 
-const submitBtn = document.querySelector("[data-submit]");
-const submitLabel = document.querySelector("[data-submit-label]");
-submitBtn?.addEventListener("mouseenter", () => {
-  if (submitBtn.classList.contains("is-sent") || reduced) return;
-  submitBtn.classList.add("is-hovering");
-  const label = submitLabel || submitBtn;
-  scrambleText(label, label.dataset.base || "Send", 640);
-});
-submitBtn?.addEventListener("mouseleave", () => submitBtn.classList.remove("is-hovering"));
-if (submitLabel) submitLabel.dataset.base = t("send");
 document.querySelectorAll("[data-scramble]").forEach((el) => {
   el.addEventListener("mouseenter", () => {
     if (reduced || el.closest(".is-sent")) return;
@@ -1123,19 +1156,11 @@ document.querySelectorAll("[data-scramble]").forEach((el) => {
   });
 });
 
-document.getElementById("contact-form")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.currentTarget;
+async function sendLeadForm() {
+  const form = document.getElementById("contact-form");
   const error = document.getElementById("form-error");
-  const valid = form.checkValidity();
-  error.hidden = true;
-  if (!valid) {
-    error.hidden = false;
-    form.reportValidity();
-    return;
-  }
-
   const data = Object.fromEntries(new FormData(form).entries());
+  if (leadNext) leadNext.disabled = true;
   try {
     const res = await fetch("https://formsubmit.co/ajax/omrinabwani123@gmail.com", {
       method: "POST",
@@ -1146,6 +1171,11 @@ document.getElementById("contact-form")?.addEventListener("submit", async (e) =>
       body: JSON.stringify({
         name: data.name,
         phone: data.phone,
+        business: data.business,
+        type: data.type,
+        budget: data.budget,
+        has_site: data.has_site,
+        message: data.message,
         _subject: "OnWebs — בקשת אתר דימו",
         _captcha: "false",
       }),
@@ -1156,52 +1186,30 @@ document.getElementById("contact-form")?.addEventListener("submit", async (e) =>
       throw new Error("send failed");
     }
   } catch {
-    return;
-  }
-
-  submitBtn.classList.remove("is-hovering");
-  submitBtn.classList.add("is-sent");
-  submitBtn.disabled = true;
-  showCalendlyStep(data.name);
-});
-
-document.getElementById("lead-form")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.currentTarget;
-  const error = document.getElementById("lead-error");
-  const valid = form.checkValidity();
-  if (error) error.hidden = true;
-  if (!valid) {
+    if (leadNext) leadNext.disabled = false;
     if (error) error.hidden = false;
-    form.reportValidity();
     return;
   }
-
-  const data = Object.fromEntries(new FormData(form).entries());
-  try {
-    const res = await fetch("https://formsubmit.co/ajax/omrinabwani123@gmail.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        name: data.name,
-        phone: data.phone,
-        _subject: "OnWebs — בקשת אתר דימו",
-        _captcha: "false",
-      }),
-    });
-    const json = await res.json().catch(() => ({}));
-    const activating = typeof json.message === "string" && /activat/i.test(json.message);
-    if (!activating && (!res.ok || json.success === false || json.success === "false")) {
-      throw new Error("send failed");
-    }
-  } catch {
-    return;
-  }
-
-  if (typeof demoDialog?.showModal === "function") demoDialog.showModal();
   showCalendlyStep(data.name);
+}
+
+function advanceLead() {
+  const error = document.getElementById("form-error");
+  if (error) error.hidden = true;
+  if (!currentLeadValid()) {
+    if (error) error.hidden = false;
+    return;
+  }
+  if (leadStep < LEAD_TOTAL - 1) {
+    setLeadStep(leadStep + 1);
+    return;
+  }
+  sendLeadForm();
+}
+
+leadNext?.addEventListener("click", advanceLead);
+document.getElementById("contact-form")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  advanceLead();
 });
 

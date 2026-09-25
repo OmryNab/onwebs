@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey2" />
     <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf6" />
-    <link rel="stylesheet" href="./src/style.css?v=lead1" />
+    <link rel="stylesheet" href="./src/style.css?v=lead2" />
   </head>
   <body>
     <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
@@ -240,52 +240,80 @@
           <button class="btn btn--fill demo-open" type="button" data-demo-open data-i18n="demoOpen">
             לקבלת אתר דימו חינמי לחצו כאן
           </button>
-
-          <form class="lead-card" id="lead-form" novalidate>
-            <div class="lead-card__top">
-              <span class="lead-card__step" data-i18n="leadProgress">התקדמות</span>
-              <span class="lead-card__pct">25%</span>
-            </div>
-            <div class="lead-card__bar" aria-hidden="true">
-              <span class="lead-card__fill"></span>
-            </div>
-            <div class="lead-card__fields">
-              <label class="lead-card__field">
-                <span data-i18n="leadName">שם מלא</span>
-                <input type="text" name="name" autocomplete="name" required placeholder="ישראל ישראלי" />
-              </label>
-              <label class="lead-card__field">
-                <span data-i18n="leadPhone">טלפון ליצירת קשר</span>
-                <input type="tel" name="phone" autocomplete="tel" required placeholder="050-0000000" />
-              </label>
-            </div>
-            <button class="lead-card__go" type="submit">
-              <span data-i18n="leadNext">בואו נמשיך</span>
-              <span class="lead-card__arrow" aria-hidden="true">←</span>
-            </button>
-            <p class="lead-card__error" id="lead-error" hidden data-i18n="error">מלאו את כל השדות.</p>
-          </form>
         </div>
       </section>
     </div>
 
     <dialog class="demo-dialog" id="demo-dialog" aria-labelledby="demo-title">
-      <form class="form demo-form" id="contact-form" method="dialog" novalidate>
-        <div class="demo-pane" data-demo-pane="fields">
-          <p class="demo-dialog__title" id="demo-title" data-i18n="demoOpen">לקבלת אתר דימו חינמי לחצו כאן</p>
-          <label class="field" data-label>
-            <span data-i18n="name">שם</span>
-            <input type="text" name="name" autocomplete="name" required />
-          </label>
-          <label class="field" data-label>
-            <span data-i18n="phone">מספר טלפון</span>
-            <input type="tel" name="phone" autocomplete="tel" required />
-          </label>
-          <button class="btn btn--fill submit" type="submit" data-submit>
-            <span data-submit-label data-i18n="send">שליחה</span>
-          </button>
-          <p class="form__error" id="form-error" hidden data-i18n="error">מלאו את כל השדות.</p>
+      <form class="lead-card" id="contact-form" method="dialog" novalidate>
+        <button class="lead-card__x" type="button" data-demo-close aria-label="סגירה">×</button>
+        <div class="lead-card__head" data-lead-chrome>
+          <div class="lead-card__top">
+            <span class="lead-card__step" data-i18n="leadProgress">התקדמות</span>
+            <span class="lead-card__pct" data-lead-pct>25%</span>
+          </div>
+          <div class="lead-card__bar" aria-hidden="true">
+            <span class="lead-card__fill" data-lead-fill></span>
+          </div>
         </div>
+        <p class="demo-dialog__title" id="demo-title" hidden data-i18n="demoOpen">לקבלת אתר דימו חינמי לחצו כאן</p>
+
+        <div class="lead-card__fields" data-lead-step="0">
+          <label class="lead-card__field">
+            <span data-i18n="leadName">שם מלא</span>
+            <input type="text" name="name" autocomplete="name" required placeholder="ישראל ישראלי" />
+          </label>
+          <label class="lead-card__field">
+            <span data-i18n="leadPhone">טלפון ליצירת קשר</span>
+            <input type="tel" name="phone" autocomplete="tel" required placeholder="050-0000000" />
+          </label>
+        </div>
+
+        <div class="lead-card__fields" data-lead-step="1" hidden>
+          <label class="lead-card__field">
+            <span data-i18n="leadBiz">סוג העסק</span>
+            <input type="text" name="business" required placeholder="מסעדה, בית קפה, משרד..." />
+          </label>
+          <label class="lead-card__field">
+            <span data-i18n="type">סוג פרויקט</span>
+            <select name="type" required>
+              <option value="" data-i18n="select">בחירה</option>
+              <option value="landing" data-i18n="optLanding">דף נחיתה</option>
+              <option value="brand" data-i18n="optBrand">אתר מותג</option>
+              <option value="app" data-i18n="optApp">אפליקציית ווב</option>
+              <option value="other" data-i18n="optOther">אחר</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="lead-card__fields" data-lead-step="2" hidden>
+          <label class="lead-card__field">
+            <span data-i18n="budget">טווח תקציב</span>
+            <select name="budget" required>
+              <option value="" data-i18n="select">בחירה</option>
+              <option value="under-2k" data-i18n="leadBud1">עד ₪2,000</option>
+              <option value="2k-5k" data-i18n="leadBud2">₪2,000–₪5,000</option>
+              <option value="5k-10k" data-i18n="leadBud3">₪5,000–₪10,000</option>
+              <option value="over-10k" data-i18n="leadBud4">מעל ₪10,000</option>
+            </select>
+          </label>
+          <label class="lead-card__field">
+            <span data-i18n="leadHasSite">יש לכם אתר היום?</span>
+            <select name="has_site" required>
+              <option value="" data-i18n="select">בחירה</option>
+              <option value="yes" data-i18n="leadHasYes">כן</option>
+              <option value="no" data-i18n="leadHasNo">לא</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="lead-card__fields lead-card__fields--one" data-lead-step="3" hidden>
+          <label class="lead-card__field">
+            <span data-i18n="message">הודעה</span>
+            <textarea name="message" rows="4" required placeholder="ספרו בקצרה מה אתם רוצים באתר"></textarea>
+          </label>
+        </div>
+
         <div class="demo-pane" data-demo-pane="meet" hidden>
           <p class="demo-dialog__title" data-i18n="demoMeet">קבעו תאריך ושעה לפגישת 30 דקות כדי שנדבר על הדמו.</p>
           <iframe
@@ -295,10 +323,15 @@
             loading="lazy"
           ></iframe>
         </div>
-        <button class="demo-dialog__close" type="button" data-demo-close data-i18n="demoClose">סגירה</button>
+
+        <button class="lead-card__go" type="button" data-lead-next>
+          <span data-i18n="leadNext">בואו נמשיך</span>
+          <span class="lead-card__arrow" aria-hidden="true">←</span>
+        </button>
+        <p class="lead-card__error" id="form-error" hidden data-i18n="error">מלאו את כל השדות.</p>
       </form>
     </dialog>
 
-    <script type="module" src="./src/main.js?v=lead1"></script>
+    <script type="module" src="./src/main.js?v=lead2"></script>
   </body>
 </html>

@@ -1098,9 +1098,10 @@ option {
 }
 
 .lead-card {
+  position: relative;
   width: min(100%, 42rem);
   margin: 0;
-  padding: 22px 22px 20px;
+  padding: 28px 22px 20px;
   background: var(--white);
   color: var(--black);
   border: 1px solid var(--black);
@@ -1133,12 +1134,19 @@ option {
   height: 100%;
   background: var(--black);
   border-radius: inherit;
+  transition: width 0.35s ease;
 }
 
 .lead-card__fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+}
+
+.lead-card__fields[hidden],
+.lead-card__head[hidden],
+.lead-card__go[hidden] {
+  display: none;
 }
 
 .lead-card__field {
@@ -1149,11 +1157,40 @@ option {
   color: var(--black);
 }
 
-.lead-card__field input {
+.lead-card__fields--one {
+  grid-template-columns: 1fr;
+}
+
+.lead-card__field input,
+.lead-card__field select,
+.lead-card__field textarea {
+  width: 100%;
   border-radius: 12px;
   padding: 14px 14px;
   background: var(--white);
   border: 1px solid var(--muted);
+  color: var(--black);
+  font: inherit;
+}
+
+.lead-card__field textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.lead-card__x {
+  position: absolute;
+  inset-inline-end: 12px;
+  top: 10px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--black);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .lead-card__go {
@@ -1194,12 +1231,12 @@ option {
 }
 
 .demo-dialog {
-  border: 1px solid var(--black);
-  background: var(--white);
+  border: 0;
+  background: transparent;
   color: var(--black);
-  padding: calc(var(--space) * 4);
+  padding: 0;
   width: calc(100% - 48px);
-  max-width: 36rem;
+  max-width: 42rem;
 }
 
 .demo-dialog::backdrop {
@@ -1221,6 +1258,10 @@ option {
 
 .demo-dialog.is-calendly {
   max-width: 52rem;
+}
+
+.demo-dialog.is-calendly .lead-card {
+  width: 100%;
 }
 
 .demo-pane[hidden] {
