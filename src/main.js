@@ -51,6 +51,10 @@ const I18N = {
     lede: "ספרו לנו על האתר. נחזור תוך יום עסקים.",
     name: "שם",
     phone: "מספר טלפון",
+    leadProgress: "התקדמות",
+    leadName: "שם מלא",
+    leadPhone: "טלפון ליצירת קשר",
+    leadNext: "בואו נמשיך",
     type: "סוג פרויקט",
     budget: "טווח תקציב",
     message: "הודעה",
@@ -1158,6 +1162,46 @@ document.getElementById("contact-form")?.addEventListener("submit", async (e) =>
   submitBtn.classList.remove("is-hovering");
   submitBtn.classList.add("is-sent");
   submitBtn.disabled = true;
+  showCalendlyStep(data.name);
+});
+
+document.getElementById("lead-form")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const error = document.getElementById("lead-error");
+  const valid = form.checkValidity();
+  if (error) error.hidden = true;
+  if (!valid) {
+    if (error) error.hidden = false;
+    form.reportValidity();
+    return;
+  }
+
+  const data = Object.fromEntries(new FormData(form).entries());
+  try {
+    const res = await fetch("https://formsubmit.co/ajax/omrinabwani123@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: data.name,
+        phone: data.phone,
+        _subject: "OnWebs — בקשת אתר דימו",
+        _captcha: "false",
+      }),
+    });
+    const json = await res.json().catch(() => ({}));
+    const activating = typeof json.message === "string" && /activat/i.test(json.message);
+    if (!activating && (!res.ok || json.success === false || json.success === "false")) {
+      throw new Error("send failed");
+    }
+  } catch {
+    return;
+  }
+
+  if (typeof demoDialog?.showModal === "function") demoDialog.showModal();
   showCalendlyStep(data.name);
 });
 

@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="./src/components/Loader/Loader.css?v=grey2" />
     <link rel="stylesheet" href="./src/components/background/gridDustField.css?v=gdf6" />
-    <link rel="stylesheet" href="./src/style.css?v=clip4" />
+    <link rel="stylesheet" href="./src/style.css?v=lead1" />
   </head>
   <body>
     <div class="gdf gdf--light gdf--page" id="site-field" data-gdf-variant="light" aria-hidden="true">
@@ -240,6 +240,31 @@
           <button class="btn btn--fill demo-open" type="button" data-demo-open data-i18n="demoOpen">
             לקבלת אתר דימו חינמי לחצו כאן
           </button>
+
+          <form class="lead-card" id="lead-form" novalidate>
+            <div class="lead-card__top">
+              <span class="lead-card__step" data-i18n="leadProgress">התקדמות</span>
+              <span class="lead-card__pct">25%</span>
+            </div>
+            <div class="lead-card__bar" aria-hidden="true">
+              <span class="lead-card__fill"></span>
+            </div>
+            <div class="lead-card__fields">
+              <label class="lead-card__field">
+                <span data-i18n="leadName">שם מלא</span>
+                <input type="text" name="name" autocomplete="name" required placeholder="ישראל ישראלי" />
+              </label>
+              <label class="lead-card__field">
+                <span data-i18n="leadPhone">טלפון ליצירת קשר</span>
+                <input type="tel" name="phone" autocomplete="tel" required placeholder="050-0000000" />
+              </label>
+            </div>
+            <button class="lead-card__go" type="submit">
+              <span data-i18n="leadNext">בואו נמשיך</span>
+              <span class="lead-card__arrow" aria-hidden="true">←</span>
+            </button>
+            <p class="lead-card__error" id="lead-error" hidden data-i18n="error">מלאו את כל השדות.</p>
+          </form>
         </div>
       </section>
     </div>
@@ -274,6 +299,6 @@
       </form>
     </dialog>
 
-    <script type="module" src="./src/main.js?v=clip4"></script>
+    <script type="module" src="./src/main.js?v=lead1"></script>
   </body>
 </html>
