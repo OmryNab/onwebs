@@ -1,6 +1,6 @@
 {
-  "framework": null,
-  "installCommand": "echo skip",
-  "buildCommand": "echo skip",
-  "outputDirectory": "."
+  "framework": "vite",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
 }
