@@ -16,49 +16,60 @@ export default function VariableProximity({ text, className = "" }: { text: stri
     const root = ref.current!;
     const letters = Array.from(root.querySelectorAll<HTMLSpanElement>("span"));
     const weights = letters.map(() => BASE_W);
+    const shown = letters.map(() => -1);
     const centers = letters.map(() => ({ x: 0, y: 0 }));
     let mx = -1e5;
     let my = -1e5;
     let visible = false;
-    let stale = true;
+    let measuredGen = -1;
+    let measuredY = 0;
+    let acc = 0;
+
+    const measure = () => {
+      letters.forEach((el, i) => {
+        const r = el.getBoundingClientRect();
+        centers[i].x = r.left + r.width / 2;
+        centers[i].y = r.top + r.height / 2;
+      });
+      measuredY = frame.y;
+      measuredGen = frame.resizeGen;
+    };
 
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;
-      stale = true;
+      if (visible) measuredGen = -1;
     });
     io.observe(root);
     const onMove = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      stale = true;
     };
     if (!isTouch) window.addEventListener("pointermove", onMove, { passive: true });
 
     const set = (i: number, w: number) => {
-      if (Math.abs(w - weights[i]) < 0.5) return;
       weights[i] = w;
-      letters[i].style.fontWeight = String(Math.round(w));
+      const q = Math.round(w / 25) * 25;
+      if (q === shown[i]) return;
+      shown[i] = q;
+      letters[i].style.fontWeight = String(q);
     };
 
-    const stop = addFrame((time) => {
+    const stop = addFrame((time, dt) => {
       if (!visible) return;
+      acc += dt;
+      if (acc < 32) return;
+      acc = 0;
       if (isTouch) {
         letters.forEach((_, i) => set(i, 525 + 375 * Math.sin(time * 0.0012 - i * 0.8)));
         return;
       }
-      if (stale || frame.changed) {
-        letters.forEach((el, i) => {
-          const r = el.getBoundingClientRect();
-          centers[i].x = r.left + r.width / 2;
-          centers[i].y = r.top + r.height / 2;
-        });
-        stale = false;
-      }
+      if (measuredGen !== frame.resizeGen) measure();
+      const dy = measuredY - frame.y;
       const radius = frame.vw * 0.28;
       letters.forEach((_, i) => {
-        const t = clamp(1 - Math.hypot(mx - centers[i].x, my - centers[i].y) / radius);
+        const t = clamp(1 - Math.hypot(mx - centers[i].x, my - (centers[i].y + dy)) / radius);
         const target = MIN_W + (MAX_W - MIN_W) * t;
-        set(i, weights[i] + (target - weights[i]) * 0.15);
+        set(i, weights[i] + (target - weights[i]) * 0.22);
       });
     });
 

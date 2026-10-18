@@ -36,8 +36,8 @@ export default function Marquee() {
     const stop = addFrame((_, dt) => {
       if (!visible) return;
       const v = frame.vel;
-      const speed = BASE_SPEED + Math.min(Math.abs(v), 6) * 0.35;
-      skew += (clamp(v * 2.5, -8, 8) - skew) * 0.1;
+      const speed = BASE_SPEED + Math.min(Math.abs(v), 2.4) * 0.22;
+      skew += (clamp(v * 1.4, -4.5, 4.5) - skew) * 0.08;
       tracks.forEach((t, i) => {
         const w = widths[i];
         if (!w) return;

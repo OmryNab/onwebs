@@ -10,6 +10,8 @@ export const STAGE_WINDOWS: [number, number][] = [
 
 const BUCKETS = 12;
 const TILT = 0.38;
+const SIN = new Float32Array(1024);
+for (let i = 0; i < SIN.length; i++) SIN[i] = Math.sin((i / SIN.length) * Math.PI * 2);
 
 type Points = { x: Float32Array; y: Float32Array };
 
@@ -144,7 +146,7 @@ export class ParticleFilm {
   private os = 0;
 
   constructor(private canvas: HTMLCanvasElement, touch: boolean) {
-    this.ctx = canvas.getContext("2d")!;
+    this.ctx = canvas.getContext("2d", { alpha: true, desynchronized: true })!;
     const N = (this.N = touch ? 1500 : 2800);
     this.sx = new Float32Array(N);
     this.sy = new Float32Array(N);
@@ -175,7 +177,8 @@ export class ParticleFilm {
   resize(W: number, H: number) {
     this.W = W;
     this.H = H;
-    this.dpr = Math.min(2, window.devicePixelRatio || 1);
+    const raw = window.devicePixelRatio || 1;
+    this.dpr = Math.min(raw, raw > 1 ? 1.25 : 1);
     this.canvas.width = Math.round(W * this.dpr);
     this.canvas.height = Math.round(H * this.dpr);
     this.browser = samplePoints(W, H, this.N, (c) => drawBrowser(c, W, H));
@@ -303,13 +306,15 @@ export class ParticleFilm {
         s = as + (this.os - as) * tt;
       }
       if (a <= 0.02) continue;
-      x += Math.sin(time * 0.0013 + i * 1.7) * 1.2;
-      y += Math.cos(time * 0.0011 + i * 2.3) * 1.2;
+      const wob = SIN[(time * 0.212 + i * 173) & 1023] * 0.8;
+      x += wob;
+      y += SIN[(time * 0.18 + i * 97) & 1023] * 0.8;
+      if (x < -8 || y < -8 || x > W + 8 || y > H + 8) continue;
       const b = Math.min(BUCKETS - 1, (a * BUCKETS) | 0);
       const buf = this.bufs[b];
       const j = counts[b]++ * 3;
-      buf[j] = x;
-      buf[j + 1] = y;
+      buf[j] = Math.round(x);
+      buf[j + 1] = Math.round(y);
       buf[j + 2] = s;
     }
 

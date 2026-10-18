@@ -7,7 +7,12 @@ import { isTouch, reducedMotion } from "../lib/env";
 export function useLenis(running: boolean) {
   useEffect(() => {
     if (isTouch || reducedMotion) return;
-    const lenis = new Lenis({ lerp: 0.1 });
+    const lenis = new Lenis({
+      duration: 1.05,
+      easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+    });
     frame.lenis = lenis;
     return () => {
       lenis.destroy();

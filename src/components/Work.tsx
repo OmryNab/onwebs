@@ -54,9 +54,10 @@ export default function Work() {
     nameRef.current!.textContent = projects[0].title;
     catRef.current!.textContent = projects[0].category;
 
-    let active = 0;
+    let active = -1;
     let first = true;
     const reveal = new Float32Array(count);
+    const shades = frames.map((el) => el.querySelector<HTMLElement>(".frame-shade")!);
 
     const stop = addFrame(() => {
       if (!frame.changed && !first) return;
@@ -76,9 +77,10 @@ export default function Work() {
 
       frames.forEach((el, i) => {
         const under = i + 1 < count ? reveal[i + 1] : 0;
-        el.style.clipPath = i === 0 ? "none" : `inset(${((1 - reveal[i]) * 100).toFixed(2)}% 0 0 0 round 14px)`;
+        const inset = i === 0 ? -1 : Math.round((1 - reveal[i]) * 400) / 4;
+        el.style.clipPath = inset < 0 ? "none" : `inset(${inset}% 0 0 0 round 14px)`;
         el.style.transform = `translate3d(0, ${(-3 * under).toFixed(2)}%, 0) scale(${(1 - 0.07 * under).toFixed(4)})`;
-        el.style.filter = under > 0.001 ? `brightness(${(1 - 0.6 * under).toFixed(3)})` : "none";
+        shades[i].style.opacity = (under * 0.55).toFixed(3);
         el.style.pointerEvents = i === next ? "auto" : "none";
       });
 

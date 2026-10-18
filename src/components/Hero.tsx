@@ -50,7 +50,7 @@ const WINDOWS: [number, number][] = [
 ];
 const RAMP = 0.04;
 const INTRO_MS = 1600;
-const BLUR = isTouch ? 8.4 : 14;
+const BLUR = isTouch ? 4 : 6;
 const RISE = isTouch ? 24 : 40;
 
 type ChapterState = {
@@ -154,8 +154,9 @@ export default function Hero({ introAt }: { introAt: number | null }) {
             st.filter = "none";
             st.transform = "none";
           } else {
+            const blur = (1 - s) * BLUR;
             st.opacity = s.toFixed(3);
-            st.filter = `blur(${((1 - s) * BLUR).toFixed(1)}px)`;
+            st.filter = blur > 0.6 ? `blur(${blur.toFixed(1)}px)` : "none";
             st.transform = `translate3d(0, ${((1 - s) * RISE * (leaving ? -1 : 1)).toFixed(1)}px, 0)`;
           }
         }
@@ -193,7 +194,7 @@ export default function Hero({ introAt }: { introAt: number | null }) {
         visible = res.rect.bottom > 0 && res.rect.top < frame.vh;
         updateChapters(p, now);
       }
-      dim += (dimTarget - dim) * 0.08;
+      dim += (dimTarget - dim) * 0.14;
       if (visible && ready) film.render(time, p, dim);
     });
 

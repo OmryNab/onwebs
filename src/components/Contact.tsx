@@ -13,21 +13,38 @@ export default function Contact() {
   useEffect(() => {
     const wrap = wrapRef.current!;
     const card = cardRef.current!;
+    let top = 0;
+    let height = 0;
+    let gen = -1;
+    let radius = -1;
+    const measure = () => {
+      const r = wrap.getBoundingClientRect();
+      top = r.top + frame.y;
+      height = r.height;
+      gen = frame.resizeGen;
+    };
     let first = true;
     return addFrame(() => {
       if (!frame.changed && !first) return;
       first = false;
-      const r = wrap.getBoundingClientRect();
-      if (r.top > frame.vh * 1.2 || r.bottom < 0) return;
-      const e = easeOutCubic(clamp((frame.vh - r.top) / (frame.vh * 0.85)));
+      if (gen !== frame.resizeGen) measure();
+      const viewTop = top - frame.y;
+      if (viewTop > frame.vh * 1.2 || viewTop + height < 0) return;
+      const e = easeOutCubic(clamp((frame.vh - viewTop) / (frame.vh * 0.85)));
       if (e >= 1) {
         card.style.transform = "none";
-        card.style.borderRadius = "0";
+        if (radius !== 0) {
+          radius = 0;
+          card.style.borderRadius = "0";
+        }
         return;
       }
-      const radius = (48 * (1 - e)).toFixed(1);
       card.style.transform = `scale(${(0.9 + 0.1 * e).toFixed(4)})`;
-      card.style.borderRadius = `${radius}px ${radius}px 0 0`;
+      const next = Math.round(48 * (1 - e));
+      if (next !== radius) {
+        radius = next;
+        card.style.borderRadius = `${next}px ${next}px 0 0`;
+      }
     });
   }, []);
 

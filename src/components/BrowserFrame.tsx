@@ -35,6 +35,7 @@ const BrowserFrame = forwardRef<HTMLAnchorElement, { project: Project; index: nu
           decoding="async"
         />
       </picture>
+      <span className="frame-shade" aria-hidden="true" />
     </a>
   );
 });

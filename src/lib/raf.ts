@@ -14,6 +14,7 @@ export const frame = {
   dir: 1 as 1 | -1,
   vw: 0,
   vh: 0,
+  resizeGen: 0,
   lenis: null as Lenis | null,
 };
 
@@ -26,11 +27,11 @@ function tick(time: number) {
 
   frame.lenis?.raf(time);
 
-  const y = window.scrollY;
+  const y = frame.lenis ? frame.lenis.animatedScroll : window.scrollY;
   const prev = frame.prevY < 0 ? y : frame.prevY;
-  frame.changed = frame.prevY < 0 || y !== frame.prevY;
-  const v = (y - prev) / dt;
-  frame.vel += (v - frame.vel) * 0.2;
+  frame.changed = frame.prevY < 0 || Math.abs(y - prev) > 0.05;
+  const v = Math.max(-3.5, Math.min(3.5, (y - prev) / dt));
+  frame.vel += (v - frame.vel) * 0.12;
   if (Math.abs(v) > 0.02) frame.dir = v > 0 ? 1 : -1;
   frame.prevY = y;
   frame.y = y;
@@ -47,6 +48,7 @@ export function addFrame(cb: FrameCallback) {
     started = true;
     window.addEventListener("resize", () => {
       frame.prevY = -1;
+      frame.resizeGen++;
     });
     requestAnimationFrame(tick);
   }

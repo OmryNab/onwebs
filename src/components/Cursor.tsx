@@ -47,8 +47,11 @@ export default function Cursor() {
     window.addEventListener("pointerover", onOver, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
     const stop = addFrame(() => {
-      rx += (mx - rx) * 0.16;
-      ry += (my - ry) * 0.16;
+      const dx = mx - rx;
+      const dy = my - ry;
+      if (dx * dx + dy * dy < 0.04) return;
+      rx += dx * 0.22;
+      ry += dy * 0.22;
       ring.style.transform = `translate3d(${rx.toFixed(1)}px, ${ry.toFixed(1)}px, 0)`;
     });
 

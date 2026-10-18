@@ -85,16 +85,16 @@ a {
   pointer-events: none;
   opacity: 0.07;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain 1s steps(6) infinite;
+  animation: grain 1.4s steps(4) infinite;
+  will-change: transform;
 }
 
 @keyframes grain {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-4%, 3%); }
-  40% { transform: translate(3%, -5%); }
-  60% { transform: translate(-2%, 4%); }
-  80% { transform: translate(5%, 2%); }
-  100% { transform: translate(0, 0); }
+  0% { transform: translate3d(0, 0, 0); }
+  25% { transform: translate3d(-3%, 2%, 0); }
+  50% { transform: translate3d(2%, -3%, 0); }
+  75% { transform: translate3d(-2%, 3%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
 .loader {
@@ -158,6 +158,8 @@ a {
   z-index: 95;
   pointer-events: none;
   mix-blend-mode: difference;
+  will-change: transform;
+}
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -402,6 +404,7 @@ a {
   display: block;
   width: 100%;
   height: 100%;
+  transform: translateZ(0);
 }
 
 .chapter {
@@ -426,7 +429,7 @@ a {
   display: inline-block;
   white-space: nowrap;
   opacity: 0;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 .chapter-eyebrow {
@@ -650,6 +653,15 @@ a {
   opacity: 1;
 }
 
+.frame-shade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .work-info {
   position: relative;
   display: flex;
@@ -712,6 +724,7 @@ a {
   transform-origin: 50% 0;
   border-radius: 48px 48px 0 0;
   transform: scale(0.9);
+  will-change: transform;
 }
 
 .contact-eyebrow {
