@@ -159,7 +159,6 @@ a {
   pointer-events: none;
   mix-blend-mode: difference;
   will-change: transform;
-}
   opacity: 0;
   transition: opacity 0.3s;
 }
