@@ -1673,18 +1673,18 @@ fieldset{border:0; margin:0; padding:0; min-width:0}
 
   safe("picker", function(){
     var tools = {
-      framer: { name: "framer", url: "https://www.framer.com", why: "עיצוב קודם, בלי קוד. גוררים, מנפישים ומפרסמים מקנבס אחד. הכי מתאים לתיקי עבודות ולדפי נחיתה.", steps: ["התחילו מתבנית שקרובה לעיצוב שאתם רוצים", "החליפו לטקסטים ולתמונות שלכם", "פרסמו וחברו את הדומיין"] },
+      cursor: { name: "cursor", url: "https://cursor.com", why: "עורך קוד עם בינה מלאכותית מובנית. מתארים במילים מה רוצים והוא כותב את הקוד, כך שאפשר לבנות אתר אמיתי ומונפש גם עם מעט ניסיון, ולהעלות אותו חינם ל־Vercel.", steps: ["הורידו את Cursor ופתחו פרויקט חדש של Vite + React", "בקשו מה־AI לבנות סקשן אחד בכל פעם ובדקו בדפדפן", "דחפו ל־GitHub והעלו ל־Vercel"] },
       webflow: { name: "webflow", url: "https://webflow.com", why: "בונה ויזואלי שעובד כמו CSS מתחת למכסה המנוע. יותר שליטה עיצובית, ועם CMS לאתרי עסקים עם כמה עמודים.", steps: ["עברו את קורס הבסיס החינמי ב־Webflow University", "בנו את העמודים עם כלי הפריסה שלו", "השתמשו ב־CMS לכל מה שמתעדכן הרבה"] },
       wordpress: { name: "wordpress", url: "https://wordpress.org", why: "מריץ חלק גדול מהאינטרנט. אלפי תבניות ותוספים, ומעולה לאתרי עסקים עם בלוג או הרבה עמודים.", steps: ["בחרו אחסון עם התקנת וורדפרס בלחיצה (ל־Hostinger יש)", "בחרו תבנית קלילה", "התקינו רק את התוספים שבאמת צריך"] },
       shopify: { name: "shopify", url: "https://www.shopify.com", why: "נבנה בשביל למכור. מוצרים, תשלומים, משלוחים ומלאי במקום אחד, עם תבניות שאפשר להתאים.", steps: ["הוסיפו מוצרים עם תמונות טובות ומחירים ברורים", "הגדירו תשלומים ומשלוחים", "בחרו תבנית וחברו את הדומיין"] },
       lovable: { name: "lovable", url: "https://lovable.dev", why: "מתארים במילים פשוטות מה רוצים, ובינה מלאכותית בונה את זה כאפליקציית React, כולל התחברות ומסד נתונים.", steps: ["כתבו פרומפט ראשון ברור: עמודים, סקשנים וסגנון", "שפרו עם הודעות המשך קצרות", "פרסמו וחברו את הדומיין"] },
       react: { name: "react + vite", url: "https://vite.dev", why: "בונים לבד עם React, Vite ו־Tailwind בעורך כמו Cursor. הכי הרבה עבודה, הכי הרבה חופש, ואחסון חינמי ב־Vercel.", steps: ["הריצו npm create vite@latest", "הוסיפו Tailwind ובנו סקשן אחד בכל פעם", "דחפו ל־GitHub והעלו ל־Vercel"] }
     };
-    var order = ["framer", "webflow", "wordpress", "shopify", "lovable", "react"];
+    var order = ["cursor", "webflow", "wordpress", "shopify", "lovable", "react"];
     var W = {
-      code: { no: { framer: 2, webflow: 1, wordpress: 1, shopify: 2, lovable: 2 }, little: { framer: 1, webflow: 2, wordpress: 2, shopify: 1, lovable: 2 }, yes: { webflow: 1, lovable: 1, react: 3 } },
-      type: { portfolio: { framer: 3, webflow: 1, react: 1 }, business: { wordpress: 3, webflow: 2, framer: 1 }, store: { shopify: 4, wordpress: 1 }, app: { lovable: 3, react: 3 } },
-      prio: { speed: { framer: 2, lovable: 2, shopify: 1 }, design: { webflow: 2, framer: 2, react: 1 }, cost: { wordpress: 2, react: 2 }, control: { react: 3, wordpress: 1 } }
+      code: { no: { webflow: 1, wordpress: 1, shopify: 2, lovable: 2 }, little: { cursor: 2, webflow: 2, wordpress: 2, shopify: 1, lovable: 2 }, yes: { cursor: 2, webflow: 1, lovable: 1, react: 3 } },
+      type: { portfolio: { cursor: 3, webflow: 1, react: 1 }, business: { wordpress: 3, webflow: 2, cursor: 1 }, store: { shopify: 4, wordpress: 1 }, app: { lovable: 3, react: 3, cursor: 2 } },
+      prio: { speed: { cursor: 1, lovable: 2, shopify: 1 }, design: { webflow: 2, cursor: 2, react: 1 }, cost: { wordpress: 2, react: 2 }, control: { react: 3, cursor: 1, wordpress: 1 } }
     };
     var bars = document.getElementById("pickBars");
     bars.innerHTML = order.map(function(k){ return '<div class="pb"><span>' + tools[k].name + '</span><span class="b"><i data-k="' + k + '"></i></span></div>'; }).join("");
